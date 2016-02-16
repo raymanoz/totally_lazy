@@ -1,16 +1,3 @@
-require 'coveralls'
-Coveralls.wear!
-
-require 'simplecov'
-
-SimpleCov.configure do
-  load_profile 'test_frameworks'
-end
-
-ENV["COVERAGE"] && SimpleCov.start do
-  add_filter "/.rvm/"
-  add_filter "parallel"
-end
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
