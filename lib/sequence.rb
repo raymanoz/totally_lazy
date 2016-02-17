@@ -45,11 +45,7 @@ module Sequences
     end
 
     def reverse
-      values = []
-      while has_next(@enumerator)
-        values << @enumerator.next
-      end
-      Sequence.new(values.reverse.lazy)
+      Sequence.new(@enumerator.reverse_each)
     end
 
     def tail
@@ -57,6 +53,10 @@ module Sequences
         raise NoSuchElementException.new
       end
       Sequence.new(@enumerator.drop(1))
+    end
+
+    def init
+      reverse.tail.reverse
     end
 
     private

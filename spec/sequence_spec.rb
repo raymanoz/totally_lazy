@@ -44,7 +44,15 @@ describe 'Sequence' do
     expect(sequence(1).tail).to eq(empty)
   end
 
-  it 'should throw NoSuchElementException when getting tail of empty sequence' do
+  it 'should raise NoSuchElementException when getting a tail of empty' do
     expect{empty.tail}.to raise_error(NoSuchElementException)
+  end
+
+  it 'should support init' do
+    expect(sequence(1,2,3).init).to eq(sequence(1,2))
+  end
+
+  it 'should raise NoSuchElementException when getting init of an empty' do
+    expect{empty.init}.to raise_error(NoSuchElementException)
   end
 end
