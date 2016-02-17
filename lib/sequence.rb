@@ -1,3 +1,6 @@
+class NoSuchElementException < RuntimeError
+end
+
 module Sequences
 
   def empty
@@ -8,19 +11,21 @@ module Sequences
     if items.first.nil?
       empty
     else
-      Sequence.new(items)
+      Sequence.new(items.lazy)
     end
   end
 
   class Sequence
     include Comparable
+    attr_reader :enumerator
 
-    def initialize(enumeratable)
-      @enumeratable = enumeratable
+    def initialize(enumerator)
+      @enumerator = enumerator
     end
 
     def head
-      enumerator.next
+      @enumerator.rewind
+      @enumerator.next
     end
 
     def head_option
@@ -40,15 +45,23 @@ module Sequences
     end
 
     def reverse
-      sequence(*@enumeratable.reverse)
+      values = []
+      while has_next(@enumerator)
+        values << @enumerator.next
+      end
+      Sequence.new(values.reverse.lazy)
     end
 
-    def enumerator
-      @enumeratable.each
+    def tail
+      unless has_next(@enumerator)
+        raise NoSuchElementException.new
+      end
+      Sequence.new(@enumerator.drop(1))
     end
 
     private
     def <=>(other)
+
       a_enumerator = enumerator
       b_enumerator = other.enumerator
 
@@ -81,5 +94,5 @@ module Sequences
 
   private
 
-  EMPTY=Sequence.new([])
+  EMPTY=Sequence.new([].each)
 end

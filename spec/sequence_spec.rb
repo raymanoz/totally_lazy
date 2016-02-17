@@ -31,4 +31,20 @@ describe 'Sequence' do
     expect(sequence(1,2,3).last_option).to eq(some(3))
     expect(empty.last_option).to eq(none)
   end
+
+  it 'should support tail' do
+    expect(sequence(1,2,3).tail).to eq(sequence(2,3))
+  end
+
+  it 'should lazily return tail' do
+    expect(Sequence.new((1..Float::INFINITY).lazy).tail.head).to eq(2)
+  end
+
+  it 'should return empty tail on sequence with 1 item' do
+    expect(sequence(1).tail).to eq(empty)
+  end
+
+  it 'should throw NoSuchElementException when getting tail of empty sequence' do
+    expect{empty.tail}.to raise_error(NoSuchElementException)
+  end
 end
