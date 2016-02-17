@@ -55,4 +55,9 @@ describe 'Sequence' do
   it 'should raise NoSuchElementException when getting init of an empty' do
     expect{empty.init}.to raise_error(NoSuchElementException)
   end
+
+  it 'should support map' do
+    times_two = Function1.new(lambda {|a| a*2})
+    expect(sequence(1,2,3).map(times_two)).to eq(sequence(2,4,6))
+  end
 end

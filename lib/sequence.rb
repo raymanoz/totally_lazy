@@ -59,6 +59,10 @@ module Sequences
       reverse.tail.reverse
     end
 
+    def map(fn)
+      Sequence.new(@enumerator.map{|a| fn.apply(a)})
+    end
+
     private
     def <=>(other)
 
