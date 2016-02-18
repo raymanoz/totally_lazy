@@ -58,6 +58,15 @@ module Sequences
       Sequence.new(@enumerator.map{|a| fn.(a)})
     end
 
+    def fold(seed, fn)
+      accumulator = seed
+      while has_next(@enumerator)
+        accumulator = fn.(accumulator, @enumerator.next)
+      end
+      accumulator
+    end
+    alias fold_left fold
+
     def reduce_right(fn)
       reversed = Enumerators::reverse(@enumerator)
       accumulator = reversed.next
@@ -67,7 +76,13 @@ module Sequences
       accumulator
     end
 
+    def reduce(fn)
+      fold_left(@enumerator.next, fn)
+    end
+    alias reduce_left reduce
+
     private
+
     def <=>(other)
 
       a_enumerator = enumerator
