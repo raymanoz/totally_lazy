@@ -59,4 +59,15 @@ describe 'Sequence' do
   it 'should support map' do
     expect(sequence(1,2,3).map(->(a){a*2})).to eq(sequence(2,4,6))
   end
+
+  it 'should support reduce_right' do
+    # expect(sequence().reduce_right(sum)).to eq(0)   <-- need a monoid to do this
+    expect(sequence(1).reduce_right(SUM)).to eq(1)
+    expect(sequence(1,2).reduce_right(SUM)).to eq(3)
+    expect(sequence(1,2,3).reduce_right(SUM)).to eq(6)
+    # expect(sequence().reduce_right()).to eq('')    <-- need a monoid to do this
+    expect(sequence("1").reduce_right(JOIN)).to eq("1")
+    expect(sequence("1","2").reduce_right(JOIN)).to eq("12")
+    expect(sequence("1","2","3").reduce_right(JOIN)).to eq("123")
+  end
 end

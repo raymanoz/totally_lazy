@@ -40,7 +40,7 @@ module Sequences
     end
 
     def reverse
-      Sequence.new(@enumerator.reverse_each)
+      Sequence.new(Enumerators::reverse(@enumerator))
     end
 
     def tail
@@ -56,6 +56,15 @@ module Sequences
 
     def map(fn)
       Sequence.new(@enumerator.map{|a| fn.(a)})
+    end
+
+    def reduce_right(fn)
+      reversed = Enumerators::reverse(@enumerator)
+      accumulator = reversed.next
+      while has_next(reversed)
+        accumulator = fn.(reversed.next, accumulator)
+      end
+      accumulator
     end
 
     private
@@ -78,15 +87,6 @@ module Sequences
         compare
       else
         has_next(a_enumerator) ? 1 : -1
-      end
-    end
-
-    def has_next(enumerator)
-      begin
-        enumerator.peek
-        true
-      rescue StopIteration
-        false
       end
     end
   end
