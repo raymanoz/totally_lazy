@@ -67,9 +67,9 @@ module Sequences
     end
     alias fold_left fold
 
-    def reduce_right(fn)
+    def fold_right(seed, fn)
       reversed = Enumerators::reverse(@enumerator)
-      accumulator = reversed.next
+      accumulator = seed
       while has_next(reversed)
         accumulator = fn.(reversed.next, accumulator)
       end
@@ -80,6 +80,15 @@ module Sequences
       fold_left(@enumerator.next, fn)
     end
     alias reduce_left reduce
+
+    def reduce_right(fn)
+      reversed = Enumerators::reverse(@enumerator)
+      accumulator = reversed.next
+      while has_next(reversed)
+        accumulator = fn.(reversed.next, accumulator)
+      end
+      accumulator
+    end
 
     private
 
