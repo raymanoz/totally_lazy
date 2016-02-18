@@ -1,5 +1,9 @@
 module Options
 
+  def option(value)
+    value.nil? ? none : some(value)
+  end
+
   def some(value)
     Some.new(value)
   end

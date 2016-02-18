@@ -57,7 +57,6 @@ describe 'Sequence' do
   end
 
   it 'should support map' do
-    times_two = function1(->(a){a*2})
-    expect(sequence(1,2,3).map(times_two)).to eq(sequence(2,4,6))
+    expect(sequence(1,2,3).map(->(a){a*2})).to eq(sequence(2,4,6))
   end
 end

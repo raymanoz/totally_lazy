@@ -24,16 +24,11 @@ module Sequences
     end
 
     def head
-      @enumerator.rewind
-      @enumerator.next
+      @enumerator.first
     end
 
     def head_option
-      begin
-        some(head)
-      rescue StopIteration
-        none
-      end
+      option(head)
     end
 
     def last
@@ -60,7 +55,7 @@ module Sequences
     end
 
     def map(fn)
-      Sequence.new(@enumerator.map{|a| fn.apply(a)})
+      Sequence.new(@enumerator.map{|a| fn.(a)})
     end
 
     private
