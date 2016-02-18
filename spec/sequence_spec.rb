@@ -61,39 +61,44 @@ describe 'Sequence' do
   end
 
   it 'should support fold (aka fold_left)' do
-    expect(sequence(1, 2, 3).fold(0, SUM)).to eq(6)
-    expect(sequence(1, 2, 3).fold_left(0, SUM)).to eq(6)
-    expect(sequence('1', '2', '3').fold(0, JOIN)).to eq('0123')
-    expect(sequence('1', '2', '3').fold_left(0, JOIN)).to eq('0123')
+    expect(sequence(1, 2, 3).fold(0, sum)).to eq(6)
+    expect(sequence(1, 2, 3).fold_left(0, sum)).to eq(6)
+    expect(sequence('1', '2', '3').fold(0, join)).to eq('0123')
+    expect(sequence('1', '2', '3').fold_left(0, join)).to eq('0123')
   end
 
   it 'should support reduce (aka reduce_left)' do
-    expect(sequence(1, 2, 3).reduce(SUM)).to eq(6)
-    expect(sequence(1, 2, 3).reduce_left(SUM)).to eq(6)
-    expect(sequence('1', '2', '3').reduce(JOIN)).to eq('123')
-    expect(sequence('1', '2', '3').reduce_left(JOIN)).to eq('123')
+    expect(sequence(1, 2, 3).reduce(sum)).to eq(6)
+    expect(sequence(1, 2, 3).reduce_left(sum)).to eq(6)
+    expect(sequence('1', '2', '3').reduce(join)).to eq('123')
+    expect(sequence('1', '2', '3').reduce_left(join)).to eq('123')
   end
 
   it 'should support fold_right' do
-    expect(empty.fold_right(4, SUM)).to eq(4)
-    expect(sequence(1).fold_right(4, SUM)).to eq(5)
-    expect(sequence(1, 2).fold_right(4, SUM)).to eq(7)
-    expect(sequence(1, 2,3).fold_right(4, SUM)).to eq(10)
-    expect(empty.fold_right('4', JOIN)).to eq('4')
-    expect(sequence('1').fold_right('4', JOIN)).to eq('14')
-    expect(sequence('1','2').fold_right('4', JOIN)).to eq('124')
-    expect(sequence('1','2','3').fold_right('4', JOIN)).to eq('1234')
+    expect(empty.fold_right(4, sum)).to eq(4)
+    expect(sequence(1).fold_right(4, sum)).to eq(5)
+    expect(sequence(1, 2).fold_right(4, sum)).to eq(7)
+    expect(sequence(1, 2,3).fold_right(4, sum)).to eq(10)
+    expect(empty.fold_right('4', join)).to eq('4')
+    expect(sequence('1').fold_right('4', join)).to eq('14')
+    expect(sequence('1','2').fold_right('4', join)).to eq('124')
+    expect(sequence('1','2','3').fold_right('4', join)).to eq('1234')
   end
-
 
   it 'should support reduce_right' do
     # expect(sequence().reduce_right(sum)).to eq(0)   <-- need a monoid to do this
-    expect(sequence(1).reduce_right(SUM)).to eq(1)
-    expect(sequence(1, 2).reduce_right(SUM)).to eq(3)
-    expect(sequence(1, 2, 3).reduce_right(SUM)).to eq(6)
+    expect(sequence(1).reduce_right(sum)).to eq(1)
+    expect(sequence(1, 2).reduce_right(sum)).to eq(3)
+    expect(sequence(1, 2, 3).reduce_right(sum)).to eq(6)
     # expect(sequence().reduce_right()).to eq('')    <-- need a monoid to do this
-    expect(sequence('1').reduce_right(JOIN)).to eq('1')
-    expect(sequence('1', '2').reduce_right(JOIN)).to eq('12')
-    expect(sequence('1', '2', '3').reduce_right(JOIN)).to eq('123')
+    expect(sequence('1').reduce_right(join)).to eq('1')
+    expect(sequence('1', '2').reduce_right(join)).to eq('12')
+    expect(sequence('1', '2', '3').reduce_right(join)).to eq('123')
+  end
+
+  it 'should support find' do
+    expect(empty.find(even)).to eq(none)
+    expect(sequence(1,3,5).find(even)).to eq(none)
+    expect(sequence(1,2,3).find(even)).to eq(some(2))
   end
 end

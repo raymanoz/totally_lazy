@@ -1,3 +1,5 @@
 module Strings
-  JOIN = ->(a,b){"#{a}#{b}"}
+  def join
+    ->(a,b){"#{a}#{b}"}
+  end
 end

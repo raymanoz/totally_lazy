@@ -90,6 +90,18 @@ module Sequences
       accumulator
     end
 
+    def find(predicate)
+      @enumerator.rewind
+      while has_next(@enumerator)
+        item = @enumerator.next
+        result = predicate.(item)
+        if result
+          return(some(item))
+        end
+      end
+      none
+    end
+
     private
 
     def <=>(other)
