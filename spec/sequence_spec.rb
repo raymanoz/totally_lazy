@@ -57,7 +57,7 @@ describe 'Sequence' do
   end
 
   it 'should support map' do
-    expect(sequence(1, 2, 3).map(->(a) { sequence.zip(sequence(2,4,6,8))*2 })).to eq(sequence(2, 4, 6))
+    expect(sequence(1, 2, 3).map(->(a) { a*2 })).to eq(sequence(2, 4, 6))
   end
 
   it 'should support fold (aka fold_left)' do

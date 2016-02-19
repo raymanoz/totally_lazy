@@ -151,11 +151,4 @@ module Sequences
       end
     end
   end
-  # class PairEnumerator < Enumerator
-  #   def initialize(left, right)
-  #     super() do |yielder|
-  #       yielder.yield(pair(left.next, right.next))
-  #     end
-  #   end
-  # end
 end
