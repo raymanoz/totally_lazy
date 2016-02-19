@@ -1,4 +1,4 @@
-module Options
+module Option
 
   def option(value)
     value.nil? ? none : some(value)
@@ -20,7 +20,6 @@ module Options
       @value = value
     end
 
-    private
     def <=>(other)
       @value <=> other.value
     end

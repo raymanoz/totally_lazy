@@ -57,7 +57,7 @@ describe 'Sequence' do
   end
 
   it 'should support map' do
-    expect(sequence(1, 2, 3).map(->(a) { a*2 })).to eq(sequence(2, 4, 6))
+    expect(sequence(1, 2, 3).map(->(a) { sequence.zip(sequence(2,4,6,8))*2 })).to eq(sequence(2, 4, 6))
   end
 
   it 'should support fold (aka fold_left)' do
@@ -78,11 +78,11 @@ describe 'Sequence' do
     expect(empty.fold_right(4, sum)).to eq(4)
     expect(sequence(1).fold_right(4, sum)).to eq(5)
     expect(sequence(1, 2).fold_right(4, sum)).to eq(7)
-    expect(sequence(1, 2,3).fold_right(4, sum)).to eq(10)
+    expect(sequence(1, 2, 3).fold_right(4, sum)).to eq(10)
     expect(empty.fold_right('4', join)).to eq('4')
     expect(sequence('1').fold_right('4', join)).to eq('14')
-    expect(sequence('1','2').fold_right('4', join)).to eq('124')
-    expect(sequence('1','2','3').fold_right('4', join)).to eq('1234')
+    expect(sequence('1', '2').fold_right('4', join)).to eq('124')
+    expect(sequence('1', '2', '3').fold_right('4', join)).to eq('1234')
   end
 
   it 'should support reduce_right' do
@@ -98,7 +98,24 @@ describe 'Sequence' do
 
   it 'should support find' do
     expect(empty.find(even)).to eq(none)
-    expect(sequence(1,3,5).find(even)).to eq(none)
-    expect(sequence(1,2,3).find(even)).to eq(some(2))
+    expect(sequence(1, 3, 5).find(even)).to eq(none)
+    expect(sequence(1, 2, 3).find(even)).to eq(some(2))
   end
+
+  # it 'should support find_index_of' do
+  #   expect(sequence(1, 3, 5).find_index_of(even)).to eq(none)
+  #   expect(sequence(1, 3, 6).find_index_of(even)).to eq(some(2))
+  # end
+  #
+  # it 'should support zip_with_index' do
+  #   expect(sequence('Dan', 'Kings', 'Raymond').zip_with_index).to eq(sequence(pair(0, 'Dan'), pair(1, 'Kings'), pair(2, 'Raymond')))
+  # end
+  #
+  it 'should support zip' do
+    sequence = sequence(1,3,5)
+    expect(sequence.zip(sequence(2, 4, 6, 8))).to eq(sequence(pair(1, 2), pair(3, 4), pair(5, 6)))
+    expect(sequence.zip(sequence(2,4,6))).to eq(sequence(pair(1,2),pair(3,4),pair(5,6)))
+    expect(sequence.zip(sequence(2,4))).to eq(sequence(pair(1,2),pair(3,4)))
+  end
+
 end

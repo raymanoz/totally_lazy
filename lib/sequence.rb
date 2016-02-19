@@ -55,7 +55,7 @@ module Sequences
     end
 
     def map(fn)
-      Sequence.new(@enumerator.map{|a| fn.(a)})
+      Sequence.new(@enumerator.map { |a| fn.(a) })
     end
 
     def fold(seed, fn)
@@ -65,6 +65,7 @@ module Sequences
       end
       accumulator
     end
+
     alias fold_left fold
 
     def fold_right(seed, fn)
@@ -79,6 +80,7 @@ module Sequences
     def reduce(fn)
       fold_left(@enumerator.next, fn)
     end
+
     alias reduce_left reduce
 
     def reduce_right(fn)
@@ -102,11 +104,20 @@ module Sequences
       none
     end
 
-    private
+    # def find_index_of(predicate)
+    #
+    # end
+    #
+    # def zip_with_index
+    #
+    # end
+    #
+    def zip(sequence)
+      Sequence.new(pair_enumerator(@enumerator, sequence.enumerator))
+    end
 
     def <=>(other)
-
-      a_enumerator = enumerator
+      a_enumerator = @enumerator
       b_enumerator = other.enumerator
 
       compare = 0
@@ -130,4 +141,21 @@ module Sequences
   private
 
   EMPTY=Sequence.new([].each)
+
+  def pair_enumerator(left, right)
+    Enumerator.new do |y|
+      left.rewind
+      right.rewind
+      loop do
+        y << pair(left.next, right.next)
+      end
+    end
+  end
+  # class PairEnumerator < Enumerator
+  #   def initialize(left, right)
+  #     super() do |yielder|
+  #       yielder.yield(pair(left.next, right.next))
+  #     end
+  #   end
+  # end
 end
