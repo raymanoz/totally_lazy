@@ -109,8 +109,7 @@ describe 'Sequence' do
   end
 
   it 'should support zip_with_index' do
-    a = sequence('Dan', 'Kings', 'Raymond').zip_with_index
-    expect(a).to eq(sequence(pair(0, 'Dan'), pair(1, 'Kings'), pair(2, 'Raymond')))
+    expect(sequence('Dan', 'Kings', 'Raymond').zip_with_index).to eq(sequence(pair(0, 'Dan'), pair(1, 'Kings'), pair(2, 'Raymond')))
   end
 
   it 'should support zip' do
