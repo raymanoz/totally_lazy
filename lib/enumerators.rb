@@ -22,4 +22,16 @@ module Enumerators
       end
     end.lazy
   end
+
+  def repeat_enumerator(value)
+    Enumerators.repeat_fn_enumerator(returns(value))
+  end
+
+  def repeat_fn_enumerator(fn)
+    Enumerator.new do |y|
+      loop do
+        y << fn.()
+      end
+    end.lazy
+  end
 end

@@ -2,7 +2,6 @@ class NoSuchElementException < RuntimeError
 end
 
 module Sequences
-
   def empty
     EMPTY
   end
@@ -21,6 +20,28 @@ module Sequences
 
   def take(sequence, count)
     Sequence.new(sequence.enumerator.take(count))
+  end
+
+  def repeat(item)
+    Sequence.new(repeat_enumerator(item))
+  end
+
+  def repeat_fn(item)
+    Sequence.new(repeat_fn_enumerator(item))
+  end
+
+  def is_empty?
+    @enumerator.rewind
+    begin
+      @enumerator.peek
+      false
+    rescue
+      true
+    end
+  end
+
+  def size
+    @enumerator.count
   end
 
   class Sequence
@@ -118,7 +139,7 @@ module Sequences
     end
 
     def zip_with_index
-      Sequences.zip(range(0), self)
+      Sequences.zip(range_from(0), self)
     end
 
     def find_index_of(predicate)

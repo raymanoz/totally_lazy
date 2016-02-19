@@ -1,13 +1,15 @@
-require_relative 'sequence'
-require_relative 'option'
-require_relative 'numbers'
 require_relative 'enumerators'
-require_relative 'strings'
+require_relative 'functions'
+require_relative 'numbers'
+require_relative 'option'
 require_relative 'pair'
+require_relative 'sequence'
+require_relative 'strings'
 
-include Sequences
-include Option
-include Numbers
 include Enumerators
-include Strings
+include Functions
+include Numbers
+include Option
 include Pair
+include Sequences
+include Strings

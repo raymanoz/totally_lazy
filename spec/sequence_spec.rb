@@ -38,7 +38,7 @@ describe 'Sequence' do
 
   it 'should lazily return tail' do
     expect(Sequence.new((1..Float::INFINITY).lazy).tail.head).to eq(2)
-    expect(range(100).tail.head).to eq(101)
+    expect(range_from(100).tail.head).to eq(101)
   end
 
   it 'should return empty tail on sequence with 1 item' do
@@ -120,9 +120,31 @@ describe 'Sequence' do
   end
 
   it 'should support take' do
-    sequence = sequence(1,2,3).take(2)
-    expect(sequence).to eq(sequence(1,2))
+    sequence = sequence(1, 2, 3).take(2)
+    expect(sequence).to eq(sequence(1, 2))
     expect(sequence(1).take(2)).to eq(sequence(1))
     expect(empty.take(2)).to eq(empty)
   end
+
+  it 'should not take more than it needs' do
+    sequence = repeat_fn(-> { raise RuntimeError })
+    expect(sequence.is_empty?).to eq(true)
+    expect(sequence.size).to eq(0)
+  end
+
+  it 'should support size' do
+    expect(range(10000000000, 10000000099).size).to eq(100)
+  end
+
+  it 'should support repeat' do
+    expect(Sequences.repeat(10).take(5)).to eq(sequence(10, 10, 10, 10, 10))
+    expect(Sequences.repeat_fn(returns(20)).take(5)).to eq(sequence(20, 20, 20, 20, 20))
+  end
+
+  it 'should support is_empty?' do
+    expect(empty.is_empty?).to be(true)
+    expect(sequence(1).is_empty?).to be(false)
+  end
+
+
 end
