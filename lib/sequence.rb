@@ -19,6 +19,10 @@ module Sequences
     left.zip(right)
   end
 
+  def take(sequence, count)
+    Sequence.new(sequence.enumerator.take(count))
+  end
+
   class Sequence
     include Comparable
     attr_reader :enumerator
@@ -120,6 +124,10 @@ module Sequences
     def find_index_of(predicate)
       @enumerator
       zip_with_index.find(->(pair) { predicate.(pair.second) }).map(->(pair) { pair.first })
+    end
+
+    def take(count)
+      Sequences::take(self, count)
     end
 
     def <=>(other)

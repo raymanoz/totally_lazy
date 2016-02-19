@@ -118,4 +118,11 @@ describe 'Sequence' do
     expect(sequence.zip(sequence(2, 4, 6))).to eq(sequence(pair(1, 2), pair(3, 4), pair(5, 6)))
     expect(sequence.zip(sequence(2, 4))).to eq(sequence(pair(1, 2), pair(3, 4)))
   end
+
+  it 'should support take' do
+    sequence = sequence(1,2,3).take(2)
+    expect(sequence).to eq(sequence(1,2))
+    expect(sequence(1).take(2)).to eq(sequence(1))
+    expect(empty.take(2)).to eq(empty)
+  end
 end
