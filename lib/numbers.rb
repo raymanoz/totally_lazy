@@ -20,6 +20,6 @@ module Numbers
   end
 
   def increment
-    ->(number){number+1}
+    ->(number) { number + 1 }
   end
 end

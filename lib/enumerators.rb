@@ -15,10 +15,11 @@ module Enumerators
   def enumerator(fn, init)
     Enumerator.new do |y|
       value = init
+      y << value
       loop do
+        value = fn.(value)
         y << value
-        value = fn
       end
-    end
+    end.lazy
   end
 end

@@ -23,6 +23,10 @@ module Pair
     def <=>(other)
       (first <=> other.first) <=> (second <=> other.second)
     end
+
+    def to_s
+      "(#{first}, #{second})"
+    end
   end
 
 end

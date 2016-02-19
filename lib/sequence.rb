@@ -15,11 +15,16 @@ module Sequences
     end
   end
 
+  def zip(left, right)
+    left.zip(right)
+  end
+
   class Sequence
     include Comparable
     attr_reader :enumerator
 
     def initialize(enumerator)
+      raise "Sequence only accepts Enumerator::Lazy, not #{enumerator.class}" unless (enumerator.class == Enumerator::Lazy)
       @enumerator = enumerator
     end
 
@@ -104,17 +109,17 @@ module Sequences
       none
     end
 
-    # def find_index_of(predicate)
-    #
-    # end
-    #
-
-    def zip(sequence)
-      Sequence.new(pair_enumerator(@enumerator, sequence.enumerator))
+    def zip(other)
+      Sequence.new(pair_enumerator(@enumerator, other.enumerator))
     end
 
     def zip_with_index
-      zip(range(0))
+      Sequences.zip(range(0), self)
+    end
+
+    def find_index_of(predicate)
+      @enumerator
+      zip_with_index.find(->(pair) { predicate.(pair.second) }).map(->(pair) { pair.first })
     end
 
     def <=>(other)
@@ -141,7 +146,7 @@ module Sequences
 
   private
 
-  EMPTY=Sequence.new([].each)
+  EMPTY=Sequence.new([].lazy)
 
   def pair_enumerator(left, right)
     Enumerator.new do |y|
@@ -150,6 +155,6 @@ module Sequences
       loop do
         y << pair(left.next, right.next)
       end
-    end
+    end.lazy
   end
 end
