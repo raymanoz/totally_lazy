@@ -123,24 +123,7 @@ module Sequences
     end
 
     def <=>(other)
-      a_enumerator = @enumerator
-      b_enumerator = other.enumerator
-
-      compare = 0
-      while has_next(a_enumerator) && has_next(b_enumerator)
-        a = a_enumerator.next
-        b = b_enumerator.next
-        compare = a<=>(b)
-        if compare != 0
-          return compare
-        end
-      end
-
-      if !(has_next(a_enumerator) || has_next(b_enumerator))
-        compare
-      else
-        has_next(a_enumerator) ? 1 : -1
-      end
+      @enumerator.entries <=> other.enumerator.entries
     end
   end
 
