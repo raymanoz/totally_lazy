@@ -38,6 +38,7 @@ describe 'Sequence' do
 
   it 'should lazily return tail' do
     expect(Sequence.new((1..Float::INFINITY).lazy).tail.head).to eq(2)
+    expect(range(100).tail.head).to eq(101)
   end
 
   it 'should return empty tail on sequence with 1 item' do
