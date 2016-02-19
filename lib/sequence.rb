@@ -108,12 +108,13 @@ module Sequences
     #
     # end
     #
-    # def zip_with_index
-    #
-    # end
-    #
+
     def zip(sequence)
       Sequence.new(pair_enumerator(@enumerator, sequence.enumerator))
+    end
+
+    def zip_with_index
+      zip(range(0))
     end
 
     def <=>(other)

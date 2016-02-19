@@ -14,4 +14,12 @@ module Numbers
   def remainder(dividend, divisor)
     dividend % divisor
   end
+
+  def range(start)
+    Sequence.new(Enumerators::enumerator(increment, start))
+  end
+
+  def increment
+    ->(number){number+1}
+  end
 end
