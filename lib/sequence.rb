@@ -30,20 +30,6 @@ module Sequences
     Sequence.new(repeat_fn_enumerator(item))
   end
 
-  def is_empty?
-    @enumerator.rewind
-    begin
-      @enumerator.peek
-      false
-    rescue
-      true
-    end
-  end
-
-  def size
-    @enumerator.count
-  end
-
   class Sequence
     include Comparable
     attr_reader :enumerator
@@ -51,6 +37,20 @@ module Sequences
     def initialize(enumerator)
       raise "Sequence only accepts Enumerator::Lazy, not #{enumerator.class}" unless (enumerator.class == Enumerator::Lazy)
       @enumerator = enumerator
+    end
+
+    def is_empty?
+      @enumerator.rewind
+      begin
+        @enumerator.peek
+        false
+      rescue
+        true
+      end
+    end
+
+    def size
+      @enumerator.count
     end
 
     def head
@@ -85,12 +85,14 @@ module Sequences
     end
 
     def map(fn=nil, &block)
+      assert_funcs(fn, block_given?)
       Sequence.new(@enumerator.map { |value|
         block_given? ? block.call(value) : fn.(value)
       })
     end
 
     def fold(seed, fn=nil, &block)
+      assert_funcs(fn, block_given?)
       accumulator = seed
       while has_next(@enumerator)
         accumulator = block_given? ? block.call(accumulator, @enumerator.next) : fn.(accumulator, @enumerator.next)
@@ -101,6 +103,7 @@ module Sequences
     alias fold_left fold
 
     def fold_right(seed, fn=nil, &block)
+      assert_funcs(fn, block_given?)
       reversed = Enumerators::reverse(@enumerator)
       accumulator = seed
       while has_next(reversed)
@@ -110,12 +113,14 @@ module Sequences
     end
 
     def reduce(fn=nil, &block)
+      assert_funcs(fn, block_given?)
       fold_left(@enumerator.next, block_given? ? block : fn)
     end
 
     alias reduce_left reduce
 
     def reduce_right(fn=nil, &block)
+      assert_funcs(fn, block_given?)
       reversed = Enumerators::reverse(@enumerator)
       accumulator = reversed.next
       while has_next(reversed)
@@ -125,6 +130,7 @@ module Sequences
     end
 
     def find(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
       @enumerator.rewind
       while has_next(@enumerator)
         item = @enumerator.next
@@ -145,6 +151,7 @@ module Sequences
     end
 
     def find_index_of(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
       @enumerator
       zip_with_index.find(->(pair) { block_given? ? block_pred.call(pair.second) : fn_pred.(pair.second) }).map(->(pair) { pair.first })
     end
@@ -154,11 +161,17 @@ module Sequences
     end
 
     def flat_map(fn=nil, &block)
+      assert_funcs(fn, block_given?)
       Sequence.new(flatten_enumerator(map(block_given? ? ->(value) { block.call(value) } : fn).enumerator))
     end
 
     def <=>(other)
       @enumerator.entries <=> other.enumerator.entries
+    end
+
+    private
+    def assert_funcs(fn, block_given)
+      raise "Cannot pass both lambda and block expressions" if !fn.nil? && block_given
     end
   end
 

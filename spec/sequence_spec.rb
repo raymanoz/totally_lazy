@@ -163,5 +163,16 @@ describe 'Sequence' do
     expect(sequence(some(1), none, some(2)).flat_map { |s| s }).to eq(sequence(1, 2))
   end
 
-# TODO: assert that fn and block are not both passed!
+  it 'should raise exception if you try to use both lambda and block' do
+    expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
+    expect { empty.flat_map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
+    expect { empty.fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.fold_right(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.reduce(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.reduce_left(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.reduce_right(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.find(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+  end
 end
