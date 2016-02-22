@@ -165,6 +165,10 @@ module Sequences
       Sequence.new(flatten_enumerator(map(block_given? ? ->(value) { block.call(value) } : fn).enumerator))
     end
 
+    def flatten
+      Sequence.new(flatten_enumerator(enumerator))
+    end
+
     def <=>(other)
       @enumerator.entries <=> other.enumerator.entries
     end

@@ -175,4 +175,9 @@ describe 'Sequence' do
     expect { empty.find(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
   end
+
+  it 'should support flatten' do
+    expect(sequence('Hello').map(to_characters).flatten).to eq(sequence('H', 'e', 'l', 'l', 'o'))
+    expect(sequence(some(1), none, some(3)).flatten).to eq(sequence(1, 3))
+  end
 end
