@@ -86,8 +86,8 @@ module Sequences
 
     def map(fn=nil, &block)
       Sequence.new(@enumerator.map { |value|
-        block_given? ? block.call(value) : fn.(value) }
-      )
+        block_given? ? block.call(value) : fn.(value)
+      })
     end
 
     def fold(seed, fn=nil, &block)
@@ -151,6 +151,10 @@ module Sequences
 
     def take(count)
       Sequences::take(self, count)
+    end
+
+    def flat_map(fn=nil, &block)
+      Sequence.new(flatten_enumerator(map(block_given? ? ->(value) { block.call(value) } : fn).enumerator))
     end
 
     def <=>(other)

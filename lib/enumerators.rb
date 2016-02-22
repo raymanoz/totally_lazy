@@ -34,4 +34,41 @@ module Enumerators
       end
     end.lazy
   end
+
+  def character_enumerator(string)
+    Enumerator.new do |y|
+      index = 0
+      loop do
+        raise StopIteration.new unless index < string.size
+        y << string[index]
+        index = index + 1
+      end
+    end.lazy
+  end
+
+  def flatten_enumerator(enumerator)
+    Enumerator.new do |y|
+      current_enumerator = empty_enumerator
+
+      loop do
+        until has_next(current_enumerator)
+          unless has_next(enumerator)
+            current_enumerator = empty_enumerator
+            break
+          end
+          current_enumerator = enumerator.next.enumerator
+        end
+
+        if has_next(current_enumerator)
+          y << current_enumerator.next
+        else
+          raise StopIteration.new
+        end
+      end
+    end.lazy
+  end
+
+  def empty_enumerator
+    [].lazy
+  end
 end
