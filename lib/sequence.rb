@@ -162,7 +162,7 @@ module Sequences
 
     def flat_map(fn=nil, &block)
       assert_funcs(fn, block_given?)
-      Sequence.new(flatten_enumerator(map(block_given? ? ->(value) { block.call(value) } : fn).enumerator))
+      map(block_given? ? ->(value) { block.call(value) } : fn).flatten
     end
 
     def flatten
