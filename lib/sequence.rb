@@ -152,12 +152,16 @@ module Sequences
 
     def find_index_of(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      @enumerator
       zip_with_index.find(->(pair) { block_given? ? block_pred.call(pair.second) : fn_pred.(pair.second) }).map(->(pair) { pair.first })
     end
 
     def take(count)
       Sequences::take(self, count)
+    end
+
+    def take_while(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      Sequence.new(enumerator.take_while{ |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
     end
 
     def flat_map(fn=nil, &block)

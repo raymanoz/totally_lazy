@@ -141,6 +141,14 @@ describe 'Sequence' do
     expect(sequence.size).to eq(0)
   end
 
+  it 'should support take_while' do
+    sequence = sequence(1, 3, 5, 6, 8, 1, 3).take_while(odd)
+    expect(sequence).to eq(sequence(1,3,5))
+    expect(sequence(1).take_while(odd)).to eq(sequence(1))
+    expect(empty.take_while(odd)).to eq(empty)
+  end
+
+
   it 'should support size' do
     expect(range(10000000000, 10000000099).size).to eq(100)
   end
@@ -174,6 +182,7 @@ describe 'Sequence' do
     expect { empty.reduce_right(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
     expect { empty.find(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.take_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
   end
 
   it 'should support flatten' do

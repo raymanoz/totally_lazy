@@ -7,6 +7,10 @@ module Numbers
     remainder_is(2, 0)
   end
 
+  def odd
+    remainder_is(2, 1)
+  end
+
   def remainder_is(divisor, remainder)
     ->(dividend) { remainder(dividend, divisor) == remainder }
   end
