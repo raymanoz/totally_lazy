@@ -24,6 +24,13 @@ module Option
       some(fn.(value))
     end
 
+    def enumerator
+      Enumerator.new { |y|
+        y << @value
+        raise StopIteration.new
+      }
+    end
+
     def <=>(other)
       @value <=> other.value
     end
@@ -37,6 +44,12 @@ module Option
   class None
     def map(fn)
       none
+    end
+
+    def enumerator
+      Enumerator.new { |y|
+        raise StopIteration.new
+      }
     end
 
     def to_s

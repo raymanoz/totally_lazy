@@ -159,10 +159,9 @@ describe 'Sequence' do
     expect(sequence('Hello').flat_map(to_characters)).to eq(sequence('H', 'e', 'l', 'l', 'o'))
     expect(sequence(sequence(1, 2), sequence(3, 4)).flat_map { |s| s.map { |v| v+1 } }).to eq(sequence(2, 3, 4, 5))
     expect(sequence(sequence(1, 2), sequence(3, 4)).flat_map { |s| s }).to eq(sequence(1, 2, 3, 4))
-    # expect(sequence(pair(1, 2), pair(3, 4)).flat_map { |s| s }).to eq(sequence(1, 2, 3, 4)) // need to make pair an enumerator
-    # expect(sequence(some(1), none, some(2)).flat_map { |s| s }).to eq(sequence(1, 2)) // need to make option an enumerator
+    expect(sequence(pair(1, 2), pair(3, 4)).flat_map { |s| s }).to eq(sequence(1, 2, 3, 4))
+    expect(sequence(some(1), none, some(2)).flat_map { |s| s }).to eq(sequence(1, 2))
   end
 
 # TODO: assert that fn and block are not both passed!
-# TODO: Make sequence an enumerator
 end

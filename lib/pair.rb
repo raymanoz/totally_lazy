@@ -20,6 +20,14 @@ module Pair
       @second.()
     end
 
+    def enumerator
+      Enumerator.new { |y|
+        y << first
+        y << second
+        raise StopIteration.new
+      }
+    end
+
     def <=>(other)
       (first <=> other.first) <=> (second <=> other.second)
     end
