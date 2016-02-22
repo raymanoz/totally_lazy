@@ -64,14 +64,18 @@ describe 'Sequence' do
 
   it 'should support fold (aka fold_left)' do
     expect(sequence(1, 2, 3).fold(0, sum)).to eq(6)
+    expect(sequence(1, 2, 3).fold(0) { |a, b| a + b }).to eq(6)
     expect(sequence(1, 2, 3).fold_left(0, sum)).to eq(6)
+    expect(sequence(1, 2, 3).fold_left(0) { |a, b| a + b }).to eq(6)
     expect(sequence('1', '2', '3').fold(0, join)).to eq('0123')
     expect(sequence('1', '2', '3').fold_left(0, join)).to eq('0123')
   end
 
   it 'should support reduce (aka reduce_left)' do
     expect(sequence(1, 2, 3).reduce(sum)).to eq(6)
+    expect(sequence(1, 2, 3).reduce { |a, b| a + b }).to eq(6)
     expect(sequence(1, 2, 3).reduce_left(sum)).to eq(6)
+    expect(sequence(1, 2, 3).reduce_left { |a, b| a + b }).to eq(6)
     expect(sequence('1', '2', '3').reduce(join)).to eq('123')
     expect(sequence('1', '2', '3').reduce_left(join)).to eq('123')
   end
@@ -81,6 +85,7 @@ describe 'Sequence' do
     expect(sequence(1).fold_right(4, sum)).to eq(5)
     expect(sequence(1, 2).fold_right(4, sum)).to eq(7)
     expect(sequence(1, 2, 3).fold_right(4, sum)).to eq(10)
+    expect(sequence(1, 2, 3).fold_right(4) { |a, b| a + b }).to eq(10)
     expect(empty.fold_right('4', join)).to eq('4')
     expect(sequence('1').fold_right('4', join)).to eq('14')
     expect(sequence('1', '2').fold_right('4', join)).to eq('124')
@@ -92,6 +97,7 @@ describe 'Sequence' do
     expect(sequence(1).reduce_right(sum)).to eq(1)
     expect(sequence(1, 2).reduce_right(sum)).to eq(3)
     expect(sequence(1, 2, 3).reduce_right(sum)).to eq(6)
+    expect(sequence(1, 2, 3).reduce_right { |a, b| a+b }).to eq(6)
     # expect(sequence().reduce_right()).to eq('')    <-- need a monoid to do this
     expect(sequence('1').reduce_right(join)).to eq('1')
     expect(sequence('1', '2').reduce_right(join)).to eq('12')
@@ -102,11 +108,13 @@ describe 'Sequence' do
     expect(empty.find(even)).to eq(none)
     expect(sequence(1, 3, 5).find(even)).to eq(none)
     expect(sequence(1, 2, 3).find(even)).to eq(some(2))
+    expect(sequence(1, 2, 3).find { |value| even.(value) }).to eq(some(2))
   end
 
   it 'should support find_index_of' do
     expect(sequence(1, 3, 5).find_index_of(even)).to eq(none)
     expect(sequence(1, 3, 6).find_index_of(even)).to eq(some(2))
+    expect(sequence(1, 3, 6).find_index_of { |value| even.(value) }).to eq(some(2))
   end
 
   it 'should support zip_with_index' do
@@ -146,6 +154,5 @@ describe 'Sequence' do
     expect(empty.is_empty?).to be(true)
     expect(sequence(1).is_empty?).to be(false)
   end
-
 
 end

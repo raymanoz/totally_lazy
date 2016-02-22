@@ -90,45 +90,45 @@ module Sequences
       )
     end
 
-    def fold(seed, fn)
+    def fold(seed, fn=nil, &block)
       accumulator = seed
       while has_next(@enumerator)
-        accumulator = fn.(accumulator, @enumerator.next)
+        accumulator = block_given? ? block.call(accumulator, @enumerator.next) : fn.(accumulator, @enumerator.next)
       end
       accumulator
     end
 
     alias fold_left fold
 
-    def fold_right(seed, fn)
+    def fold_right(seed, fn=nil, &block)
       reversed = Enumerators::reverse(@enumerator)
       accumulator = seed
       while has_next(reversed)
-        accumulator = fn.(reversed.next, accumulator)
+        accumulator = block_given? ? block.call(reversed.next, accumulator) : fn.(reversed.next, accumulator)
       end
       accumulator
     end
 
-    def reduce(fn)
-      fold_left(@enumerator.next, fn)
+    def reduce(fn=nil, &block)
+      fold_left(@enumerator.next, block_given? ? block : fn)
     end
 
     alias reduce_left reduce
 
-    def reduce_right(fn)
+    def reduce_right(fn=nil, &block)
       reversed = Enumerators::reverse(@enumerator)
       accumulator = reversed.next
       while has_next(reversed)
-        accumulator = fn.(reversed.next, accumulator)
+        accumulator = block_given? ? block.call(reversed.next, accumulator) : fn.(reversed.next, accumulator)
       end
       accumulator
     end
 
-    def find(predicate)
+    def find(fn_pred=nil, &block_pred)
       @enumerator.rewind
       while has_next(@enumerator)
         item = @enumerator.next
-        result = predicate.(item)
+        result = block_given? ? block_pred.call(item) : fn_pred.(item)
         if result
           return(some(item))
         end
@@ -144,9 +144,9 @@ module Sequences
       Sequences.zip(range_from(0), self)
     end
 
-    def find_index_of(predicate)
+    def find_index_of(fn_pred=nil, &block_pred)
       @enumerator
-      zip_with_index.find(->(pair) { predicate.(pair.second) }).map(->(pair) { pair.first })
+      zip_with_index.find(->(pair) { block_given? ? block_pred.call(pair.second) : fn_pred.(pair.second) }).map(->(pair) { pair.first })
     end
 
     def take(count)
