@@ -59,6 +59,7 @@ describe 'Sequence' do
 
   it 'should support map' do
     expect(sequence(1, 2, 3).map(->(a) { a*2 })).to eq(sequence(2, 4, 6))
+    expect(sequence(1, 2, 3).map { |a| a*2 }).to eq(sequence(2, 4, 6))
   end
 
   it 'should support fold (aka fold_left)' do
@@ -127,7 +128,7 @@ describe 'Sequence' do
   end
 
   it 'should not take more than it needs' do
-    sequence = repeat_fn(-> { raise RuntimeError })
+    sequence = repeat_fn(-> { raise RuntimeError }).take(0)
     expect(sequence.is_empty?).to eq(true)
     expect(sequence.size).to eq(0)
   end

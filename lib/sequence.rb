@@ -84,8 +84,12 @@ module Sequences
       reverse.tail.reverse
     end
 
-    def map(fn)
-      Sequence.new(@enumerator.map { |a| fn.(a) })
+    def map(fn=nil, &block)
+      Sequence.new(if block_given?
+        @enumerator.map { |value| block.call(value) }
+      else
+        @enumerator.map { |value| fn.(value) }
+      end)
     end
 
     def fold(seed, fn)
