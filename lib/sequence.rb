@@ -85,11 +85,9 @@ module Sequences
     end
 
     def map(fn=nil, &block)
-      Sequence.new(if block_given?
-        @enumerator.map { |value| block.call(value) }
-      else
-        @enumerator.map { |value| fn.(value) }
-      end)
+      Sequence.new(@enumerator.map { |value|
+        block_given? ? block.call(value) : fn.(value) }
+      )
     end
 
     def fold(seed, fn)
