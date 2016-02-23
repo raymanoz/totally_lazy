@@ -4,6 +4,7 @@ require_relative 'functions'
 require_relative 'numbers'
 require_relative 'option'
 require_relative 'pair'
+require_relative 'predicates'
 require_relative 'sequence'
 require_relative 'strings'
 
@@ -13,5 +14,6 @@ include Functions
 include Numbers
 include Option
 include Pair
+include Predicates
 include Sequences
 include Strings

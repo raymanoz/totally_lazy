@@ -202,6 +202,16 @@ module Sequences
       @enumerator.all? { |value| block_given? ? block_pred.call(value) : fn_pred.(value) }
     end
 
+    def filter(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      Sequence.new(@enumerator.select{ |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
+    end
+
+    def reject(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      filter(Predicates::not(block_given? ? ->(value) { block_pred.call(value)} : fn_pred))
+    end
+
     def <=>(other)
       @enumerator.entries <=> other.enumerator.entries
     end

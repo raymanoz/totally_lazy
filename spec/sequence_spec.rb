@@ -62,6 +62,30 @@ describe 'Sequence' do
     expect(sequence(1, 2, 3).map { |a| a*2 }).to eq(sequence(2, 4, 6))
   end
 
+  it 'should ensure map is lazy' do
+    result = sequence(returns(1), call_raises(RuntimeError.new)).map(call)
+    expect(result.head).to eq(1)
+  end
+
+  it 'should support filter' do
+    expect(sequence(1, 2, 3, 4).filter(even)).to eq(sequence(2, 4))
+    expect(sequence(1, 2, 3, 4).filter { |value| even.(value) }).to eq(sequence(2, 4))
+  end
+
+  it 'should ensure filter is lazy' do
+    result = sequence(returns(1), returns(2), call_raises(RuntimeError.new)).map(call).filter(even)
+    expect(result.head).to eq(2)
+  end
+
+  it 'should support composite predicates' do
+    expect(sequence(1, 2, 3, 4).filter(Predicates::not(even))).to eq(sequence(1, 3))
+  end
+
+  it 'should support reject' do
+    expect(sequence(1, 2, 3, 4).reject(even)).to eq(sequence(1, 3))
+    expect(sequence(1, 2, 3, 4).reject { |value| even.(value) }).to eq(sequence(1, 3))
+  end
+
   it 'should support fold (aka fold_left)' do
     expect(sequence(1, 2, 3).fold(0, sum)).to eq(6)
     expect(sequence(1, 2, 3).fold(0) { |a, b| a + b }).to eq(6)
@@ -191,6 +215,8 @@ describe 'Sequence' do
     expect { empty.drop_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.exists?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.for_all?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.filter(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
   end
 
   it 'should support flatten' do
