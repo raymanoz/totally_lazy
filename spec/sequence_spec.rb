@@ -117,6 +117,10 @@ describe 'Sequence' do
     expect(sequence(1, 3, 6).find_index_of { |value| even.(value) }).to eq(some(2))
   end
 
+  it 'should support finding the first some' do
+    expect(sequence(none, some(2), some(3)).flat_map(identity).head_option).to eq(some(2))
+  end
+
   it 'should support zip_with_index' do
     expect(sequence('Dan', 'Kings', 'Raymond').zip_with_index).to eq(sequence(pair(0, 'Dan'), pair(1, 'Kings'), pair(2, 'Raymond')))
   end
