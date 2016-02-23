@@ -142,8 +142,9 @@ describe 'Sequence' do
   end
 
   it 'should support take_while' do
-    sequence = sequence(1, 3, 5, 6, 8, 1, 3).take_while(odd)
-    expect(sequence).to eq(sequence(1,3,5))
+    sequence = sequence(1, 3, 5, 6, 8, 1, 3)
+    expect(sequence.take_while(odd)).to eq(sequence(1, 3, 5))
+    expect(sequence.take_while { |value| odd.(value) }).to eq(sequence(1, 3, 5))
     expect(sequence(1).take_while(odd)).to eq(sequence(1))
     expect(empty.take_while(odd)).to eq(empty)
   end
@@ -183,10 +184,26 @@ describe 'Sequence' do
     expect { empty.find(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.take_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.drop_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
   end
 
   it 'should support flatten' do
     expect(sequence('Hello').map(to_characters).flatten).to eq(sequence('H', 'e', 'l', 'l', 'o'))
     expect(sequence(some(1), none, some(3)).flatten).to eq(sequence(1, 3))
   end
+
+  it 'should support drop' do
+    expect(sequence(1, 2, 3).drop(2)).to eq(sequence(3))
+    expect(sequence(1).drop(2)).to eq(empty)
+    expect(empty.drop(1)).to eq(empty)
+  end
+
+  it 'should support drop_while' do
+    sequence = sequence(1, 3, 5, 6, 8, 1, 3)
+    expect(sequence.drop_while(odd)).to eq(sequence(6, 8, 1, 3))
+    expect(sequence.drop_while{ |value| odd.(value) }).to eq(sequence(6, 8, 1, 3))
+    expect(sequence(1).drop_while(odd)).to eq(empty)
+    expect(empty.drop_while(odd)).to eq(empty)
+  end
+
 end

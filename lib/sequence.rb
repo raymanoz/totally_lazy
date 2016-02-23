@@ -22,6 +22,10 @@ module Sequences
     Sequence.new(sequence.enumerator.take(count))
   end
 
+  def drop(sequence, count)
+    Sequence.new(sequence.enumerator.drop(count))
+  end
+
   def repeat(item)
     Sequence.new(repeat_enumerator(item))
   end
@@ -155,7 +159,16 @@ module Sequences
 
     def take_while(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      Sequence.new(enumerator.take_while { |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
+      Sequence.new(@enumerator.take_while { |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
+    end
+
+    def drop(count)
+      Sequences::drop(self, count)
+    end
+
+    def drop_while(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      Sequence.new(@enumerator.drop_while { |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
     end
 
     def flat_map(fn=nil, &block)
