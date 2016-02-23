@@ -201,9 +201,13 @@ describe 'Sequence' do
   it 'should support drop_while' do
     sequence = sequence(1, 3, 5, 6, 8, 1, 3)
     expect(sequence.drop_while(odd)).to eq(sequence(6, 8, 1, 3))
-    expect(sequence.drop_while{ |value| odd.(value) }).to eq(sequence(6, 8, 1, 3))
+    expect(sequence.drop_while { |value| odd.(value) }).to eq(sequence(6, 8, 1, 3))
     expect(sequence(1).drop_while(odd)).to eq(empty)
     expect(empty.drop_while(odd)).to eq(empty)
   end
 
+  it 'should support sort' do
+    expect(sort(sequence(5, 6, 1, 3, 4, 2))).to eq(sequence(1, 2, 3, 4, 5, 6))
+    expect(sort(sequence('Matt', 'Dan', 'Bob'))).to eq(sequence('Bob', 'Dan', 'Matt'))
+  end
 end

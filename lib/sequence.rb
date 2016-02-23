@@ -34,6 +34,10 @@ module Sequences
     Sequence.new(repeat_fn_enumerator(item))
   end
 
+  def sort(sequence)
+    Sequence.new(sequence.enumerator.sort.lazy)
+  end
+
   class Sequence
     include Comparable
     attr_reader :enumerator
