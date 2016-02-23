@@ -210,4 +210,12 @@ describe 'Sequence' do
     expect(sort(sequence(5, 6, 1, 3, 4, 2))).to eq(sequence(1, 2, 3, 4, 5, 6))
     expect(sort(sequence('Matt', 'Dan', 'Bob'))).to eq(sequence('Bob', 'Dan', 'Matt'))
   end
+
+  it 'should support sort descending' do
+    expect(sort(sequence(5, 6, 1, 3, 4, 2), descending)).to eq(sequence(6, 5, 4, 3, 2, 1))
+    expect(sequence(5, 6, 1, 3, 4, 2).sort_by(descending)).to eq(sequence(6, 5, 4, 3, 2, 1))
+    expect(sort(sequence('Bob', 'Dan', 'Matt'), descending)).to eq(sequence('Matt', 'Dan', 'Bob'))
+    expect(sequence('Bob', 'Dan', 'Matt').sort_by(descending)).to eq(sequence('Matt', 'Dan', 'Bob'))
+  end
+
 end

@@ -34,8 +34,8 @@ module Sequences
     Sequence.new(repeat_fn_enumerator(item))
   end
 
-  def sort(sequence)
-    Sequence.new(sequence.enumerator.sort.lazy)
+  def sort(sequence, comparator=ascending)
+    Sequence.new(sequence.enumerator.sort{ |a,b| comparator.(a,b) }.lazy)
   end
 
   class Sequence
@@ -182,6 +182,10 @@ module Sequences
 
     def flatten
       Sequence.new(flatten_enumerator(enumerator))
+    end
+
+    def sort_by(comparator)
+      Sequences::sort(self, comparator)
     end
 
     def <=>(other)
