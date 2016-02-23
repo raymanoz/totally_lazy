@@ -93,40 +93,34 @@ module Sequences
 
     def fold(seed, fn=nil, &block)
       assert_funcs(fn, block_given?)
-      accumulator = seed
-      while has_next(@enumerator)
-        accumulator = block_given? ? block.call(accumulator, @enumerator.next) : fn.(accumulator, @enumerator.next)
-      end
-      accumulator
+      @enumerator.inject(seed) { |accumulator, value|
+        block_given? ? block.call(accumulator, value) : fn.(accumulator, value)
+      }
     end
 
     alias fold_left fold
 
     def fold_right(seed, fn=nil, &block)
       assert_funcs(fn, block_given?)
-      reversed = Enumerators::reverse(@enumerator)
-      accumulator = seed
-      while has_next(reversed)
-        accumulator = block_given? ? block.call(reversed.next, accumulator) : fn.(reversed.next, accumulator)
-      end
-      accumulator
+      Enumerators::reverse(@enumerator).inject(seed) { |accumulator, value|
+        block_given? ? block.call(value, accumulator) : fn.(value, accumulator)
+      }
     end
 
     def reduce(fn=nil, &block)
       assert_funcs(fn, block_given?)
-      fold_left(@enumerator.next, block_given? ? block : fn)
+      @enumerator.inject { |accumulator, value|
+        block_given? ? block.call(accumulator, value) : fn.(accumulator, value)
+      }
     end
 
     alias reduce_left reduce
 
     def reduce_right(fn=nil, &block)
       assert_funcs(fn, block_given?)
-      reversed = Enumerators::reverse(@enumerator)
-      accumulator = reversed.next
-      while has_next(reversed)
-        accumulator = block_given? ? block.call(reversed.next, accumulator) : fn.(reversed.next, accumulator)
-      end
-      accumulator
+      Enumerators::reverse(@enumerator).inject { |accumulator, value|
+        block_given? ? block.call(value, accumulator) : fn.(value, accumulator)
+      }
     end
 
     def find(fn_pred=nil, &block_pred)
@@ -161,7 +155,7 @@ module Sequences
 
     def take_while(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      Sequence.new(enumerator.take_while{ |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
+      Sequence.new(enumerator.take_while { |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
     end
 
     def flat_map(fn=nil, &block)
