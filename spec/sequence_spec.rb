@@ -189,6 +189,8 @@ describe 'Sequence' do
     expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.take_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.drop_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.exists?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.for_all?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
   end
 
   it 'should support flatten' do
@@ -220,6 +222,23 @@ describe 'Sequence' do
     expect(sequence(5, 6, 1, 3, 4, 2).sort_by(descending)).to eq(sequence(6, 5, 4, 3, 2, 1))
     expect(sort(sequence('Bob', 'Dan', 'Matt'), descending)).to eq(sequence('Matt', 'Dan', 'Bob'))
     expect(sequence('Bob', 'Dan', 'Matt').sort_by(descending)).to eq(sequence('Matt', 'Dan', 'Bob'))
+  end
+
+  it 'should support contains' do
+    expect(sequence(1, 3, 5).contains?(2)).to eq(false)
+    expect(sequence(1, 2, 3).contains?(2)).to eq(true)
+  end
+
+  it 'should support exists' do
+    expect(sequence(1, 3, 5).exists?(even)).to eq(false)
+    expect(sequence(1, 3, 5).exists? { |value| even.(value) }).to eq(false)
+    expect(sequence(1, 2, 3).exists?(even)).to eq(true)
+  end
+
+  it 'should support for_all' do
+    expect(sequence(1, 3, 5).for_all?(odd)).to eq(true)
+    expect(sequence(1, 3, 5).for_all? { |value| odd.(value) }).to eq(true)
+    expect(sequence(1, 2, 3).for_all?(odd)).to eq(false)
   end
 
 end

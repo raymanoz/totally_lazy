@@ -12,7 +12,13 @@ module Option
     NONE
   end
 
-  class Some
+  class Option
+    def is_defined?
+      !is_empty?
+    end
+  end
+
+  class Some < Option
     include Comparable
     attr_reader :value
 
@@ -31,6 +37,10 @@ module Option
       }
     end
 
+    def is_empty?
+      false
+    end
+
     def <=>(other)
       @value <=> other.value
     end
@@ -40,8 +50,11 @@ module Option
     end
   end
 
-  private
-  class None
+  class None < Option
+    def is_empty?
+      true
+    end
+
     def map(fn)
       none
     end

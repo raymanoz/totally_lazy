@@ -35,7 +35,7 @@ module Sequences
   end
 
   def sort(sequence, comparator=ascending)
-    Sequence.new(sequence.enumerator.sort{ |a,b| comparator.(a,b) }.lazy)
+    Sequence.new(sequence.enumerator.sort { |a, b| comparator.(a, b) }.lazy)
   end
 
   class Sequence
@@ -188,13 +188,27 @@ module Sequences
       Sequences::sort(self, comparator)
     end
 
+    def contains?(value)
+      @enumerator.member?(value)
+    end
+
+    def exists?(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      find(block_given? ? ->(value) { block_pred.call(value) } : fn_pred).is_defined?
+    end
+
+    def for_all?(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      @enumerator.all? { |value| block_given? ? block_pred.call(value) : fn_pred.(value) }
+    end
+
     def <=>(other)
       @enumerator.entries <=> other.enumerator.entries
     end
 
     private
     def assert_funcs(fn, block_given)
-      raise "Cannot pass both lambda and block expressions" if !fn.nil? && block_given
+      raise 'Cannot pass both lambda and block expressions' if !fn.nil? && block_given
     end
   end
 
