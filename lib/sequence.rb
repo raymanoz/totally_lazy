@@ -224,6 +224,11 @@ module Sequences
       Sequence.new(groups.to_a.map { |group| Group.new(group[0], group[1].lazy) }.lazy)
     end
 
+    def each(fn=nil, &block)
+      @enumerator.each { |value| block_given? ? block.call(value) : fn.(value) }
+
+    end
+
     def <=>(other)
       @enumerator.entries <=> other.enumerator.entries
     end

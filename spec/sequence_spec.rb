@@ -218,6 +218,7 @@ describe 'Sequence' do
     expect { empty.filter(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.group_by(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.each(->(v) { puts(v) }) { |v| puts(v) } }.to raise_error(RuntimeError)
   end
 
   it 'should support flatten' do
@@ -276,6 +277,15 @@ describe 'Sequence' do
     groups_block = sequence(1, 2, 3, 4).group_by { |value| mod(2).(value) }
     expect(groups_block.first).to eq(group(1, sequence(1, 3).enumerator))
     expect(groups_block.second).to eq(group(0, sequence(2, 4).enumerator))
+  end
+
+  it 'should support each' do
+    sum = 0
+    sequence(1,2).each( ->(value) { sum = sum + value} )
+    expect(sum).to eq(3)
+
+    sequence(3,4).each{ |value| sum = sum + value }
+    expect(sum).to eq(10)
   end
 
 end
