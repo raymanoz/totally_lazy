@@ -65,6 +65,12 @@ module Sequences
       @enumerator.first
     end
 
+    alias first head
+
+    def second
+      tail.head
+    end
+
     def head_option
       option(head)
     end
@@ -212,6 +218,12 @@ module Sequences
       filter(Predicates::not(block_given? ? ->(value) { block_pred.call(value)} : fn_pred))
     end
 
+    def group_by(fn=nil, &block)
+      assert_funcs(fn, block_given?)
+      groups = @enumerator.group_by { |value| block_given? ? block.call(value) : fn.(value) }
+      Sequence.new(groups.to_a.map { |group| Group.new(group[0], group[1].lazy) }.lazy)
+    end
+
     def <=>(other)
       @enumerator.entries <=> other.enumerator.entries
     end
@@ -219,6 +231,24 @@ module Sequences
     private
     def assert_funcs(fn, block_given)
       raise 'Cannot pass both lambda and block expressions' if !fn.nil? && block_given
+    end
+  end
+
+  def group(key, enumerator)
+    Group.new(key, enumerator)
+  end
+
+  class Group < Sequence
+    include Comparable
+    attr_reader :key
+
+    def initialize(key, enumerator)
+      super(enumerator)
+      @key = key
+    end
+
+    def <=>(other)
+      (@key <=> other.key) <=> (enumerator.entries<=>(other.enumerator.entries))
     end
   end
 

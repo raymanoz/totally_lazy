@@ -14,4 +14,8 @@ module Functions
   def call
     ->(fn) { fn.() }
   end
+
+  def flip(fn)
+    ->(a,b) { fn.(b,a) }
+  end
 end

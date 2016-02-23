@@ -30,4 +30,9 @@ module Numbers
   def increment
     ->(number) { number + 1 }
   end
+
+  def mod(divisor)
+    ->(number) { number % divisor }
+  end
+
 end

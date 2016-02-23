@@ -217,6 +217,7 @@ describe 'Sequence' do
     expect { empty.for_all?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.filter(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.group_by(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
   end
 
   it 'should support flatten' do
@@ -265,6 +266,16 @@ describe 'Sequence' do
     expect(sequence(1, 3, 5).for_all?(odd)).to eq(true)
     expect(sequence(1, 3, 5).for_all? { |value| odd.(value) }).to eq(true)
     expect(sequence(1, 2, 3).for_all?(odd)).to eq(false)
+  end
+
+  it 'should support group_by and preserve order' do
+    groups_fn = sequence(1, 2, 3, 4).group_by(mod(2))
+    expect(groups_fn.first).to eq(group(1, sequence(1, 3).enumerator))
+    expect(groups_fn.second).to eq(group(0, sequence(2, 4).enumerator))
+
+    groups_block = sequence(1, 2, 3, 4).group_by { |value| mod(2).(value) }
+    expect(groups_block.first).to eq(group(1, sequence(1, 3).enumerator))
+    expect(groups_block.second).to eq(group(0, sequence(2, 4).enumerator))
   end
 
 end
