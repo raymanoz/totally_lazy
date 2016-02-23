@@ -122,7 +122,7 @@ describe 'Sequence' do
     expect(sequence(1, 2).reduce_right(sum)).to eq(3)
     expect(sequence(1, 2, 3).reduce_right(sum)).to eq(6)
     expect(sequence(1, 2, 3).reduce_right { |a, b| a+b }).to eq(6)
-    # expect(sequence().reduce_right()).to eq('')    <-- need a monoid to do this
+    # expect(sequence().reduce_right(join)).to eq('')    <-- need a monoid to do this
     expect(sequence('1').reduce_right(join)).to eq('1')
     expect(sequence('1', '2').reduce_right(join)).to eq('12')
     expect(sequence('1', '2', '3').reduce_right(join)).to eq('123')
