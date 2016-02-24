@@ -31,7 +31,7 @@ module Functions
   end
 
   def call_concurrently(sequence_of_fn)
-    pool = Concurrent::FixedThreadPool.new(5)
+    pool = Concurrent::CachedThreadPool.new
     begin
       call_concurrently_with_pool(sequence_of_fn, pool)
     ensure
