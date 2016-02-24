@@ -201,7 +201,6 @@ module Sequences
     def exists?(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
       @enumerator.any? { |value| block_given? ? block_pred.call(value) : fn_pred.(value) }
-      # find(block_given? ? ->(value) { block_pred.call(value) } : fn_pred).is_defined?
     end
 
     def for_all?(fn_pred=nil, &block_pred)
