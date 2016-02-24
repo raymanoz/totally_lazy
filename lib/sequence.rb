@@ -38,6 +38,11 @@ module Sequences
     Sequence.new(sequence.enumerator.sort { |a, b| comparator.(a, b) }.lazy)
   end
 
+  def map_concurrently(sequence, fn=nil, &block)
+    call_concurrently(sequence.map(defer_return(block_given? ? ->(value) { block.call(value) } : fn)))
+  end
+
+  # noinspection RubyTooManyMethodsInspection
   class Sequence
     include Comparable
     attr_reader :enumerator
@@ -227,6 +232,15 @@ module Sequences
     def each(fn=nil, &block)
       assert_funcs(fn, block_given?)
       @enumerator.each { |value| block_given? ? block.call(value) : fn.(value) }
+    end
+
+    def map_concurrently(fn=nil, &block)
+      assert_funcs(fn, block_given?)
+      Sequences::map_concurrently(self, block_given? ? ->(value) { block.call(value) } : fn)
+    end
+
+    def realise
+      Sequence.new(@enumerator.to_a.lazy)
     end
 
     def <=>(other)

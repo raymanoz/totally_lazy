@@ -1,3 +1,6 @@
+require 'concurrent/executors'
+require 'concurrent/promise'
+
 module Functions
   def returns(value)
     -> { value }
@@ -16,6 +19,48 @@ module Functions
   end
 
   def flip(fn)
-    ->(a,b) { fn.(b,a) }
+    ->(a, b) { fn.(b, a) }
+  end
+
+  def defer_return(fn)
+    ->(value) { defer_apply(fn, value) }
+  end
+
+  def defer_apply(fn, value)
+    ->() { fn.(value) }
+  end
+
+  def call_concurrently(sequence_of_fn)
+    pool = Concurrent::FixedThreadPool.new(5)
+    begin
+      call_concurrently_with_pool(sequence_of_fn, pool)
+    ensure
+      pool.shutdown
+    end
+  end
+
+  def call_concurrently_with_pool(sequence_of_fn, pool)
+    sequence_of_fn.
+        map(as_promise).
+        map(execute_with(pool)).
+        realise.
+        map(realise_promise)
+  end
+
+  def as_promise
+    -> (fn) {
+      Concurrent::Promise.new { fn.() }
+    }
+  end
+
+  def execute_with(pool)
+    -> (promise) {
+      pool.post { promise.execute }
+      promise
+    }
+  end
+
+  def realise_promise
+    ->(promise) { promise.value! }
   end
 end

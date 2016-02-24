@@ -6,4 +6,5 @@ group :development do
   gem 'rspec_html_formatter', '~> 0.3.0'
   gem 'rake', '~> 10.3.2'
   gem 'guard-rspec', require: false
+  gem 'concurrent-ruby-edge', require: 'concurrent-edge'
 end

@@ -202,6 +202,7 @@ describe 'Sequence' do
 
   it 'should raise exception if you try to use both lambda and block' do
     expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
+    expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
     expect { empty.flat_map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
     expect { empty.fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
     expect { empty.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
@@ -281,11 +282,20 @@ describe 'Sequence' do
 
   it 'should support each' do
     sum = 0
-    sequence(1,2).each( ->(value) { sum = sum + value} )
+    sequence(1, 2).each(->(value) { sum = sum + value })
     expect(sum).to eq(3)
 
-    sequence(3,4).each{ |value| sum = sum + value }
+    sequence(3, 4).each { |value| sum = sum + value }
     expect(sum).to eq(10)
   end
+
+  it 'should support map_concurrently' do
+    strings = sequence(1, 2).map_concurrently(to_string)
+    expect(strings).to eq(sequence('1', '2'))
+
+    strings_block = sequence(1, 2).map_concurrently { |value| to_string.(value) }
+    expect(strings_block).to eq(sequence('1', '2'))
+  end
+
 
 end
