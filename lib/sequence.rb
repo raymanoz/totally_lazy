@@ -200,7 +200,8 @@ module Sequences
 
     def exists?(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      find(block_given? ? ->(value) { block_pred.call(value) } : fn_pred).is_defined?
+      @enumerator.any? { |value| block_given? ? block_pred.call(value) : fn_pred.(value) }
+      # find(block_given? ? ->(value) { block_pred.call(value) } : fn_pred).is_defined?
     end
 
     def for_all?(fn_pred=nil, &block_pred)
@@ -210,12 +211,12 @@ module Sequences
 
     def filter(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      Sequence.new(@enumerator.select{ |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
+      Sequence.new(@enumerator.select { |value| block_given? ? block_pred.call(value) : fn_pred.(value) })
     end
 
     def reject(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      filter(Predicates::not(block_given? ? ->(value) { block_pred.call(value)} : fn_pred))
+      filter(Predicates::not(block_given? ? ->(value) { block_pred.call(value) } : fn_pred))
     end
 
     def group_by(fn=nil, &block)
@@ -225,8 +226,8 @@ module Sequences
     end
 
     def each(fn=nil, &block)
+      assert_funcs(fn, block_given?)
       @enumerator.each { |value| block_given? ? block.call(value) : fn.(value) }
-
     end
 
     def <=>(other)
