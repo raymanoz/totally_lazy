@@ -1,10 +1,11 @@
 language: ruby
 rvm:
-- 2.1.4
+- 2.0.0
 sudo: false
 env:
   global:
   - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+before_deploy: "rake gemspec"
 deploy:
   provider: rubygems
   api_key:
