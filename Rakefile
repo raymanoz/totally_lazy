@@ -36,6 +36,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = 'Port of java functional library totallylazy to ruby'
   gem.email = 'rbarlow@raymanoz.com'
   gem.authors = ['Raymond Barlow', 'Kingsley Hendrickse']
+  gem.required_ruby_version = '2.0.0'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
