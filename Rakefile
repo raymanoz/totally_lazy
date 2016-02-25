@@ -11,17 +11,17 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  gem.name = 'totally_lazy'
-  gem.homepage = 'http://github.com/raymanoz/totally_lazy'
-  gem.license = 'Apache 2.0'
-  gem.summary = 'Port of java functional library totally lazy to ruby'
-  gem.description = 'Port of java functional library totally lazy to ruby'
-  gem.email = 'rbarlow@raymanoz.com'
-  gem.authors = ['Raymond Barlow']
-end
-Jeweler::RubygemsDotOrgTasks.new
+# require 'jeweler'
+# Jeweler::Tasks.new do |gem|
+#   gem.name = 'totally_lazy'
+#   gem.homepage = 'http://github.com/raymanoz/totally_lazy'
+#   gem.license = 'Apache 2.0'
+#   gem.summary = 'Port of java functional library totally lazy to ruby'
+#   gem.description = 'Port of java functional library totally lazy to ruby'
+#   gem.email = 'rbarlow@raymanoz.com'
+#   gem.authors = ['Raymond Barlow']
+# end
+# Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
