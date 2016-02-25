@@ -1,4 +1,10 @@
 language: ruby
 rvm:
- - 2.1.4
+- 2.1.4
 sudo: false
+env:
+  global:
+  - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+deploy:
+  api_key:
+    secure: jEmrfbYxQ/FShLEGz3n2tn0nQbqer5Hy89ruarB7hXlxqm4966mWLytgwV6jGWqHY1kTgpQIwfhDA51plcfz5M6jKysTTVe6CIvlCFmyohCckmJG8wD9QJLlqVCGYwf9GdOhQmU17hZN8QCELMVIbT4n0vMlwjZmDhQww+UW/EO1veSq/nhZzNL8pfInkw5mKbExj3hYoWj+Got8ZTt6zGEK6G5mRJVgsdxqLpzkw6boCVsrzOdJZ6vXs+LjfxkA19u4RI4QDxZLMYtsU09E/Gw9JdlZBkGS8Ooa41IruXE3H8In0UGuYsaiGuv6M56exdVEKbTW6mZm4HFNxC5SphZflB8cWwBOPqJnSnfskt2Ci1SpH9XXwzk3dlAwXdlyQROkJOAD7ndEtSIlY9e7HH/kiNz52VSRmXVIWF+h9kfu/H7cMiZK9sYsE9DeuxgWhU6uyZ5swz3F5WtazQLnpvaZGvZGve173vflLFK+qlHAQxzekFTlR0+KPex6lbN2crNwr2/uJ5wpduundlZN2BqlYDvIe+p991MoGgl8X/dp8tJ9uxmY3/wz3LLyXmKr22CW7xYyU2IFcTggIXHOlFXgTkSsng2/wGgPVOzk6ebR04snMEka04VlslN39x8DSZbwAgclQXBSkYddoNAkp1DAQACUUzjBOak5L31wD4g=
