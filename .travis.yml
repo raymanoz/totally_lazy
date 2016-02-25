@@ -13,3 +13,5 @@ deploy:
   gem: totally_lazy
   on:
     repo: raymanoz/totally_lazy
+  skip_cleanup: true
+  gemspec: totally_lazy.gemspec
