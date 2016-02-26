@@ -128,18 +128,25 @@ module Sequences
 
     def reduce(fn=nil, &block)
       assert_funcs(fn, block_given?)
-      @enumerator.inject { |accumulator, value|
-        block_given? ? block.call(accumulator, value) : fn.(accumulator, value)
-      }
+      _fn = block_given? ? ->(a, b) { block.call(a, b) } : fn
+      accumulator = seed(@enumerator, fn)
+      while has_next(@enumerator)
+        accumulator = _fn.(accumulator, @enumerator.next)
+      end
+      accumulator
     end
 
     alias reduce_left reduce
 
     def reduce_right(fn=nil, &block)
       assert_funcs(fn, block_given?)
-      Enumerators::reverse(@enumerator).inject { |accumulator, value|
-        block_given? ? block.call(value, accumulator) : fn.(value, accumulator)
-      }
+      _fn = block_given? ? ->(a, b) { block.call(a, b) } : fn
+      reversed = Enumerators::reverse(@enumerator)
+      accumulator = seed(reversed, fn)
+      while has_next(reversed)
+        accumulator = _fn.(reversed.next, accumulator)
+      end
+      accumulator
     end
 
     def find(fn_pred=nil, &block_pred)
@@ -250,6 +257,11 @@ module Sequences
     private
     def assert_funcs(fn, block_given)
       raise 'Cannot pass both lambda and block expressions' if !fn.nil? && block_given
+    end
+
+    def seed(enumerator, fn)
+      enumerator.rewind
+      !fn.nil? && fn.respond_to?(:identity) ? fn.identity : enumerator.next
     end
   end
 

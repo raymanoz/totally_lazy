@@ -104,6 +104,10 @@ describe 'Sequence' do
     expect(sequence('1', '2', '3').reduce_left(join)).to eq('123')
   end
 
+  it 'should support reduce of empty sequence' do
+    expect(empty.reduce(sum)).to eq(0)
+  end
+
   it 'should support fold_right' do
     expect(empty.fold_right(4, sum)).to eq(4)
     expect(sequence(1).fold_right(4, sum)).to eq(5)
@@ -117,12 +121,12 @@ describe 'Sequence' do
   end
 
   it 'should support reduce_right' do
-    # expect(sequence().reduce_right(sum)).to eq(0)   <-- need a monoid to do this
+    expect(empty.reduce_right(sum)).to eq(0)
     expect(sequence(1).reduce_right(sum)).to eq(1)
     expect(sequence(1, 2).reduce_right(sum)).to eq(3)
     expect(sequence(1, 2, 3).reduce_right(sum)).to eq(6)
     expect(sequence(1, 2, 3).reduce_right { |a, b| a+b }).to eq(6)
-    # expect(sequence().reduce_right(join)).to eq('')    <-- need a monoid to do this
+    expect(empty.reduce_right(join)).to eq('')
     expect(sequence('1').reduce_right(join)).to eq('1')
     expect(sequence('1', '2').reduce_right(join)).to eq('12')
     expect(sequence('1', '2', '3').reduce_right(join)).to eq('123')
@@ -296,6 +300,4 @@ describe 'Sequence' do
     strings_block = sequence(1, 2).map_concurrently { |value| to_string.(value) }
     expect(strings_block).to eq(sequence('1', '2'))
   end
-
-
 end

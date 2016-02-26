@@ -2,6 +2,13 @@ require 'concurrent/executors'
 require 'concurrent/promise'
 
 module Functions
+  def monoid(fn, id)
+    fn.define_singleton_method(:identity) do
+      id
+    end
+    fn
+  end
+
   def returns(value)
     -> { value }
   end

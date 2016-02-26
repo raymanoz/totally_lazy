@@ -24,7 +24,7 @@ task :guard do
   system('bundle exec guard')
 end
 
-version = "#{File.read('VERSION').to_s}.#{ENV['BUILD_NUMBER'].to_s}"
+version = "#{File.read('VERSION').to_s}.#{ENV['BUILD_NUMBER'].nil? ? 'devbuild' : ENV['BUILD_NUMBER'].to_s}"
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|

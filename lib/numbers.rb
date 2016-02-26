@@ -1,6 +1,6 @@
 module Numbers
   def sum
-    ->(a, b) { a + b }
+    monoid(->(a, b) { a + b }, 0)
   end
 
   def even
@@ -34,5 +34,4 @@ module Numbers
   def mod(divisor)
     ->(number) { number % divisor }
   end
-
 end

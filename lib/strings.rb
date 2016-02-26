@@ -1,6 +1,6 @@
 module Strings
   def join(separator='')
-    ->(a, b) { "#{a}#{separator}#{b}" }
+    monoid(->(a, b) { "#{a}#{separator}#{b}" }, '')
   end
 
   def to_characters
