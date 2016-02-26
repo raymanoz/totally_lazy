@@ -36,6 +36,14 @@ describe 'Option' do
     expect(none.fold(1, add)).to eq(1)
   end
 
+  it 'should support map' do
+    expect(option(1).map(to_string)).to eq(option('1'))
+    expect(option(1).map { |value| value.to_s }).to eq(option('1'))
+    expect(some(2).map(to_string)).to eq(some('2'))
+    expect(none.map(to_string)).to eq(none)
+    expect(some(2).map(ignore_and_return(nil))).to eq(some(nil)) # differs from Java TL which reutrns none
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
     expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
@@ -45,6 +53,8 @@ describe 'Option' do
     expect { none.fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
     expect { some(1).fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
     expect { none.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { some(1).map(->(v) { v.to_s }) { |v| v.to_s } }.to raise_error(RuntimeError)
+    expect { none.map(->(v) { v.to_s }) { |v| v.to_s } }.to raise_error(RuntimeError)
   end
 
 end

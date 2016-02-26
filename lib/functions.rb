@@ -13,6 +13,18 @@ module Functions
     -> { value }
   end
 
+  def ignore_and_return(value)
+    returns1(value)
+  end
+
+  def returns1(value)
+    constant(value)
+  end
+
+  def constant(value)
+    ->(_) { value }
+  end
+
   def identity
     -> (a) { a }
   end

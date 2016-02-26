@@ -40,11 +40,12 @@ module Option
 
     def exists?(fn_pred=nil, &block_pred)
       assert_funcs(fn_pred, block_given?)
-      block_given? ? block_pred.call(@value) : fn_pred.(value)
+      block_given? ? block_pred.call(@value) : fn_pred.(@value)
     end
 
-    def map(fn)
-      some(fn.(value))
+    def map(fn=nil, &block)
+      assert_funcs(fn, block_given?)
+      some(block_given? ? block.call(@value) : fn.(@value))
     end
 
     def fold(seed, fn=nil, &block)
@@ -88,7 +89,8 @@ module Option
       false
     end
 
-    def map(fn)
+    def map(fn=nil, &block)
+      assert_funcs(fn, block_given?)
       none
     end
 
