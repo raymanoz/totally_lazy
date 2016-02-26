@@ -26,6 +26,10 @@ module Option
       @value = value
     end
 
+    def contains?(value)
+      @value == value
+    end
+
     def map(fn)
       some(fn.(value))
     end
@@ -53,6 +57,10 @@ module Option
   class None < Option
     def is_empty?
       true
+    end
+
+    def contains?(_)
+      false
     end
 
     def map(fn)
