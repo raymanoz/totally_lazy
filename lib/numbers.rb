@@ -34,4 +34,8 @@ module Numbers
   def mod(divisor)
     ->(number) { number % divisor }
   end
+
+  def greater_than(right)
+    ->(left) { left > right }
+  end
 end

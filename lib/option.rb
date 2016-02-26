@@ -1,4 +1,7 @@
+require_relative 'lambda_block'
+
 module Option
+  include LambdaBlock
 
   def option(value)
     value.nil? ? none : some(value)
@@ -18,6 +21,11 @@ module Option
     end
   end
 
+  def is?(fn_pred=nil, &block_pred)
+    assert_funcs(fn_pred, block_given?)
+    exists?(block_given? ? ->(value) { block_pred.call(value) } : fn_pred)
+  end
+
   class Some < Option
     include Comparable
     attr_reader :value
@@ -28,6 +36,11 @@ module Option
 
     def contains?(value)
       @value == value
+    end
+
+    def exists?(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
+      block_given? ? block_pred.call(@value) : fn_pred.(value)
     end
 
     def map(fn)
@@ -59,7 +72,11 @@ module Option
       true
     end
 
-    def contains?(_)
+    def contains?(value)
+      false
+    end
+
+    def exists?(fn_pred=nil, &block_pred)
       false
     end
 

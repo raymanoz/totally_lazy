@@ -1,3 +1,5 @@
+require_relative 'lambda_block'
+
 class NoSuchElementException < RuntimeError
 end
 
@@ -45,6 +47,7 @@ module Sequences
   # noinspection RubyTooManyMethodsInspection
   class Sequence
     include Comparable
+    include LambdaBlock
     attr_reader :enumerator
 
     def initialize(enumerator)
@@ -255,10 +258,6 @@ module Sequences
     end
 
     private
-    def assert_funcs(fn, block_given)
-      raise 'Cannot pass both lambda and block expressions' if !fn.nil? && block_given
-    end
-
     def seed(enumerator, fn)
       enumerator.rewind
       !fn.nil? && fn.respond_to?(:identity) ? fn.identity : enumerator.next
