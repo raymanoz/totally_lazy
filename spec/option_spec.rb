@@ -45,9 +45,9 @@ describe 'Option' do
   end
 
   it 'should support flat_map' do
-    expect(some(4).flat_map(divide(2).to_optional)).to eq(some(2))
-    expect(some(4).flat_map{ |v| divide(2).to_optional.(v) }).to eq(some(2))
-    expect(some(4).flat_map(divide(0).to_optional)).to eq(none)
+    expect(some(4).flat_map(divide(2).optional)).to eq(some(2))
+    expect(some(4).flat_map{ |v| divide(2).optional.(v) }).to eq(some(2))
+    expect(some(4).flat_map(divide(0).optional)).to eq(none)
     expect(none.flat_map(constant(none))).to eq(none)
     expect(none.flat_map(some(4))).to eq(none)
   end
@@ -63,7 +63,7 @@ describe 'Option' do
     expect { none.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
     expect { some(1).map(->(v) { v.to_s }) { |v| v.to_s } }.to raise_error(RuntimeError)
     expect { none.map(->(v) { v.to_s }) { |v| v.to_s } }.to raise_error(RuntimeError)
-    expect { some(4).flat_map(divide(2).to_optional){ |v| divide(2).to_optional.(v) } }.to raise_error(RuntimeError)
+    expect { some(4).flat_map(divide(2).optional){ |v| divide(2).optional.(v) } }.to raise_error(RuntimeError)
   end
 
 end

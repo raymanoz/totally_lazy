@@ -2,7 +2,7 @@ require 'concurrent/executors'
 require 'concurrent/promise'
 
 class Proc
-  def to_optional
+  def optional
     ->(value) {
       begin
         option(self.(value))
