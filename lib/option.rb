@@ -48,6 +48,11 @@ module Option
       some(block_given? ? block.call(@value) : fn.(@value))
     end
 
+    def flat_map(fn=nil, &block) # function should return an option
+      assert_funcs(fn, block_given?)
+      block_given? ? block.call(@value) : fn.(@value)
+    end
+
     def fold(seed, fn=nil, &block)
       assert_funcs(fn, block_given?)
       block_given? ? block.call(seed, @value) : fn.(seed, @value)
@@ -90,6 +95,11 @@ module Option
     end
 
     def map(fn=nil, &block)
+      assert_funcs(fn, block_given?)
+      none
+    end
+
+    def flat_map(fn=nil, &block) # function should return an option
       assert_funcs(fn, block_given?)
       none
     end

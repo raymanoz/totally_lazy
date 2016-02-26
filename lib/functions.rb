@@ -1,6 +1,18 @@
 require 'concurrent/executors'
 require 'concurrent/promise'
 
+class Proc
+  def to_optional
+    ->(value) {
+      begin
+        option(self.(value))
+      rescue
+        none
+      end
+    }
+  end
+end
+
 module Functions
   def monoid(fn, id)
     fn.define_singleton_method(:identity) do

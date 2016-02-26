@@ -15,6 +15,10 @@ module Numbers
     remainder_is(2, 1)
   end
 
+  def divide(divisor)
+    ->(dividend) { dividend / divisor }
+  end
+
   def remainder_is(divisor, remainder)
     ->(dividend) { remainder(dividend, divisor) == remainder }
   end
