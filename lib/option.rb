@@ -47,15 +47,22 @@ module Option
       some(fn.(value))
     end
 
+    def fold(seed, fn=nil, &block)
+      assert_funcs(fn, block_given?)
+      block_given? ? block.call(seed, @value) : fn.(seed, @value)
+    end
+
+    alias fold_left fold
+
+    def is_empty?
+      false
+    end
+
     def enumerator
       Enumerator.new { |y|
         y << @value
         raise StopIteration.new
       }
-    end
-
-    def is_empty?
-      false
     end
 
     def <=>(other)
@@ -77,12 +84,20 @@ module Option
     end
 
     def exists?(fn_pred=nil, &block_pred)
+      assert_funcs(fn_pred, block_given?)
       false
     end
 
     def map(fn)
       none
     end
+
+    def fold(seed, fn=nil &block)
+      assert_funcs(fn, block_given?)
+      seed
+    end
+
+    alias fold_left fold
 
     def enumerator
       Enumerator.new { |y|

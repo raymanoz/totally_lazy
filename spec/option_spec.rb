@@ -28,8 +28,23 @@ describe 'Option' do
     expect(none.is?(greater_than(0))).to eq(false)
   end
 
-  it 'should raise exception if you try to use both lambda and block' do
-    expect { empty.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
-    expect { empty.is?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
+  it 'should support fold (aka fold_left)' do
+    expect(option(1).fold(1, add)).to eq(2)
+    expect(option(1).fold_left(1, add)).to eq(2)
+    expect(option(1).fold(1) { |a, b| a + b }).to eq(2)
+    expect(some(1).fold(1, add)).to eq(2)
+    expect(none.fold(1, add)).to eq(1)
   end
+
+  it 'should raise exception if you try to use both lambda and block' do
+    expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
+    expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
+    expect { some(1).is?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
+    expect { none.is?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
+    expect { some(1).fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { none.fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { some(1).fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { none.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+  end
+
 end

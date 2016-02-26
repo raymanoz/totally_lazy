@@ -3,6 +3,10 @@ module Numbers
     monoid(->(a, b) { a + b }, 0)
   end
 
+  def add
+    sum
+  end
+
   def even
     remainder_is(2, 0)
   end
