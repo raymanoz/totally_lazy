@@ -60,6 +60,10 @@ module Option
 
     alias fold_left fold
 
+    def flatten
+      flat_map(identity)
+    end
+
     def is_empty?
       false
     end

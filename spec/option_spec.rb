@@ -52,6 +52,11 @@ describe 'Option' do
     expect(none.flat_map(some(4))).to eq(none)
   end
 
+  it 'should support flatten' do
+    expect(some(some(1)).flatten).to eq(some(1))
+    expect(some(none).flatten).to eq(none)
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
     expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
