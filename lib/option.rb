@@ -45,7 +45,7 @@ module Option
 
     def map(fn=nil, &block)
       assert_funcs(fn, block_given?)
-      some(block_given? ? block.call(@value) : fn.(@value))
+      option(block_given? ? block.call(@value) : fn.(@value))
     end
 
     def flat_map(fn=nil, &block) # function should return an option

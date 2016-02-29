@@ -41,7 +41,7 @@ describe 'Option' do
     expect(option(1).map { |value| value.to_s }).to eq(option('1'))
     expect(some(2).map(to_string)).to eq(some('2'))
     expect(none.map(to_string)).to eq(none)
-    expect(some(2).map(ignore_and_return(nil))).to eq(some(nil)) # differs from Java TL which reutrns none
+    expect(some(2).map(ignore_and_return(nil))).to eq(none)
   end
 
   it 'should support flat_map' do
