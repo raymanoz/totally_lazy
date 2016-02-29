@@ -63,6 +63,11 @@ describe 'Option' do
     expect(none.size).to eq(0)
   end
 
+  it 'should support get' do
+    expect(some(1).get).to eq(1)
+    expect{none.get}.to raise_error(NoSuchElementException)
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
     expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)

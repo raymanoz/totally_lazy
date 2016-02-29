@@ -72,6 +72,10 @@ module Option
       1
     end
 
+    def get
+      @value
+    end
+
     def enumerator
       Enumerator.new { |y|
         y << @value
@@ -121,6 +125,10 @@ module Option
 
     def size
       0
+    end
+
+    def get
+      raise NoSuchElementException.new
     end
 
     def enumerator
