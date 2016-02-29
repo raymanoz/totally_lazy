@@ -85,4 +85,12 @@ module Functions
   def realise_promise
     ->(promise) { promise.value! }
   end
+
+  def get_left
+    ->(either) { either.left }
+  end
+
+  def get_right
+    ->(either) { either.right }
+  end
 end

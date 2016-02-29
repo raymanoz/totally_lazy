@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative '../spec_helper'
 
 describe 'Option' do
   it 'should support is_empty? & is_defined?' do

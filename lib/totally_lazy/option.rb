@@ -28,6 +28,8 @@ module Options
 end
 
 class Option
+  include Comparable
+
   def self.option(value)
     value.nil? ? none : some(value)
   end
@@ -55,7 +57,6 @@ class Option
 end
 
 class Some < Option
-  include Comparable
   include LambdaBlock
 
   attr_reader :value
@@ -200,6 +201,10 @@ class None < Option
     Enumerator.new { |y|
       raise StopIteration.new
     }
+  end
+
+  def <=>(other)
+    other == NONE
   end
 
   def to_s
