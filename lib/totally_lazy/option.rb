@@ -109,6 +109,10 @@ class Some < Option
 
   alias or_else get_or_else
 
+  def get_or_nil
+    get
+  end
+
   def enumerator
     Enumerator.new { |y|
       y << @value
@@ -176,6 +180,10 @@ class None < Option
   end
 
   alias or_else get_or_else
+
+  def get_or_nil
+    nil
+  end
 
   def enumerator
     Enumerator.new { |y|

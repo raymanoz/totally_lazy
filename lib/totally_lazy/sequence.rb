@@ -83,7 +83,6 @@ class Sequence
     left.zip(right)
   end
 
-
   def self.sequence(*items)
     if items.first.nil?
       empty

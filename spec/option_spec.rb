@@ -70,7 +70,7 @@ describe 'Option' do
   end
 
   it 'should support get_or_else with value (aka or_else)' do
-    expect(Option::some(1).get_or_else(2)).to eq(1)
+    expect(some(1).get_or_else(2)).to eq(1)
     expect(some(1).or_else(2)).to eq(1)
     expect(none.get_or_else(2)).to eq(2)
     expect(option(1).get_or_else(2)).to eq(1)
@@ -84,6 +84,13 @@ describe 'Option' do
     expect(option(1).get_or_else(returns(2))).to eq(1)
     expect(option(nil).get_or_else(returns(2))).to eq(2)
     expect { option(nil).get_or_else(call_raises(RuntimeError.new)) }.to raise_error(RuntimeError)
+  end
+
+  it 'should support get_or_nil' do
+    expect(some(1).get_or_nil).to eq(1)
+    expect(none.get_or_nil).to eq(nil)
+    expect(option(1).get_or_nil).to eq(1)
+    expect(option(nil).get_or_nil).to eq(nil)
   end
 
   it 'should raise exception if you try to use both lambda and block' do
