@@ -93,6 +93,11 @@ describe 'Option' do
     expect(option(nil).get_or_nil).to eq(nil)
   end
 
+  it 'should support get_or_raise' do
+    expect(some("bob").get_or_raise(RuntimeError.new)).to eq("bob")
+    expect{none.get_or_raise(RuntimeError.new)}.to raise_error(RuntimeError)
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
     expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)

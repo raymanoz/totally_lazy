@@ -113,6 +113,12 @@ class Some < Option
     get
   end
 
+  def get_or_raise(error)
+    get
+  end
+
+  alias get_or_throw get_or_raise
+
   def enumerator
     Enumerator.new { |y|
       y << @value
@@ -185,6 +191,11 @@ class None < Option
     nil
   end
 
+  def get_or_raise(error)
+    raise error
+  end
+
+  alias get_or_throw get_or_raise
   def enumerator
     Enumerator.new { |y|
       raise StopIteration.new
