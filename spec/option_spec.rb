@@ -1,7 +1,6 @@
 require_relative 'spec_helper'
 
 describe 'Option' do
-
   it 'should support is_empty? & is_defined?' do
     expect(some(1).is_empty?).to eq(false)
     expect(some(1).is_defined?).to eq(true)
@@ -94,7 +93,7 @@ describe 'Option' do
   end
 
   it 'should support get_or_raise' do
-    expect(some("bob").get_or_raise(RuntimeError.new)).to eq("bob")
+    expect(some('bob').get_or_raise(RuntimeError.new)).to eq('bob')
     expect{none.get_or_raise(RuntimeError.new)}.to raise_error(RuntimeError)
   end
 
@@ -112,5 +111,4 @@ describe 'Option' do
     expect { some(4).flat_map(divide(2).optional) { |v| divide(2).optional.(v) } }.to raise_error(RuntimeError)
     expect { some(1).get_or_else(returns(2)) { |value| 3 } }.to raise_error(RuntimeError)
   end
-
 end
