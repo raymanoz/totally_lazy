@@ -68,6 +68,13 @@ describe 'Option' do
     expect{none.get}.to raise_error(NoSuchElementException)
   end
 
+  it 'should support get_or_else (aka or_else)' do
+    expect(some(1).get_or_else(2)).to eq(1)
+    expect(none.get_or_else(2)).to eq(2)
+    expect(option(1).get_or_else(2)).to eq(1)
+    expect(option(nil).get_or_else(2)).to eq(2)
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
     expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)

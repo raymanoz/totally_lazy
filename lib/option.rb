@@ -76,6 +76,10 @@ module Option
       @value
     end
 
+    def get_or_else(value)
+      get
+    end
+
     def enumerator
       Enumerator.new { |y|
         y << @value
@@ -130,6 +134,12 @@ module Option
     def get
       raise NoSuchElementException.new
     end
+
+    def get_or_else(value)
+      value
+    end
+
+    alias or_else get_or_else
 
     def enumerator
       Enumerator.new { |y|
