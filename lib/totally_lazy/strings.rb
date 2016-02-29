@@ -1,4 +1,5 @@
 module Strings
+  private
   def join(separator='')
     monoid(->(a, b) { "#{a}#{separator}#{b}" }, '')
   end

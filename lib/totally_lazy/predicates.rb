@@ -1,5 +1,6 @@
 module Predicates
-  def not(pred)
+  private
+  def _not(pred)
     -> (bool) { !pred.(bool) }
   end
 end

@@ -1,4 +1,5 @@
 module Numbers
+  private
   def sum
     monoid(->(a, b) { a + b }, 0)
   end
@@ -28,7 +29,7 @@ module Numbers
   end
 
   def range_from(start)
-    Sequence.new(Enumerators::enumerator(increment, start))
+    Sequence.new(enumerator_of(increment, start))
   end
 
   def range(from, to)

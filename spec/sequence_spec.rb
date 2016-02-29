@@ -1,6 +1,7 @@
 require_relative 'spec_helper'
 
 describe 'Sequence' do
+
   it 'should create empty sequence when iterable is nil' do
     expect(sequence(nil)).to eq(empty)
   end
@@ -78,7 +79,7 @@ describe 'Sequence' do
   end
 
   it 'should support composite predicates' do
-    expect(sequence(1, 2, 3, 4).filter(Predicates::not(even))).to eq(sequence(1, 3))
+    expect(sequence(1, 2, 3, 4).filter(_not(even))).to eq(sequence(1, 3))
   end
 
   it 'should support reject' do
@@ -187,8 +188,8 @@ describe 'Sequence' do
   end
 
   it 'should support repeat' do
-    expect(Sequences.repeat(10).take(5)).to eq(sequence(10, 10, 10, 10, 10))
-    expect(Sequences.repeat_fn(returns(20)).take(5)).to eq(sequence(20, 20, 20, 20, 20))
+    expect(repeat(10).take(5)).to eq(sequence(10, 10, 10, 10, 10))
+    expect(repeat_fn(returns(20)).take(5)).to eq(sequence(20, 20, 20, 20, 20))
   end
 
   it 'should support is_empty?' do

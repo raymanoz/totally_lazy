@@ -1,4 +1,5 @@
 module Comparators
+  private
   def ascending
     -> (a,b) { a <=> b }
   end

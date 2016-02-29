@@ -1,19 +1,8 @@
 require 'concurrent/executors'
 require 'concurrent/promise'
 
-class Proc
-  def optional
-    ->(value) {
-      begin
-        option(self.(value))
-      rescue
-        none
-      end
-    }
-  end
-end
-
 module Functions
+  private
   def monoid(fn, id)
     fn.define_singleton_method(:identity) do
       id
@@ -44,6 +33,8 @@ module Functions
   def call_raises(e)
     -> { raise e }
   end
+
+  alias call_throws call_raises
 
   def call
     ->(fn) { fn.() }

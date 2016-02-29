@@ -1,5 +1,6 @@
 module Enumerators
-  def reverse(e)
+  private
+  def reverse_enumerator(e)
     e.reverse_each
   end
 
@@ -12,7 +13,7 @@ module Enumerators
     end
   end
 
-  def enumerator(fn, init)
+  def enumerator_of(fn, init)
     Enumerator.new do |y|
       value = init
       y << value
@@ -23,16 +24,16 @@ module Enumerators
     end.lazy
   end
 
-  def repeat_enumerator(value)
-    Enumerators.repeat_fn_enumerator(returns(value))
-  end
-
   def repeat_fn_enumerator(fn)
     Enumerator.new do |y|
       loop do
         y << fn.()
       end
     end.lazy
+  end
+
+  def repeat_enumerator(value)
+    repeat_fn_enumerator(returns(value))
   end
 
   def character_enumerator(string)
