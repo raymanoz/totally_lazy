@@ -26,6 +26,10 @@ module Option
     exists?(block_given? ? ->(value) { block_pred.call(value) } : fn_pred)
   end
 
+  def flatten
+    flat_map(identity)
+  end
+
   class Some < Option
     include Comparable
     attr_reader :value
@@ -60,12 +64,12 @@ module Option
 
     alias fold_left fold
 
-    def flatten
-      flat_map(identity)
-    end
-
     def is_empty?
       false
+    end
+
+    def size
+      1
     end
 
     def enumerator
@@ -114,6 +118,10 @@ module Option
     end
 
     alias fold_left fold
+
+    def size
+      0
+    end
 
     def enumerator
       Enumerator.new { |y|

@@ -55,6 +55,12 @@ describe 'Option' do
   it 'should support flatten' do
     expect(some(some(1)).flatten).to eq(some(1))
     expect(some(none).flatten).to eq(none)
+    expect(none.flatten).to eq(none)
+  end
+
+  it 'should support size' do
+    expect(some(1).size).to eq(1)
+    expect(none.size).to eq(0)
   end
 
   it 'should raise exception if you try to use both lambda and block' do
