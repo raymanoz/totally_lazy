@@ -15,4 +15,10 @@ module Predicates
   def matches?(regex)
     ->(value) { !regex.match(value).nil? }
   end
+
+  def equal_to?(that)
+    ->(this) { this == that }
+  end
+  alias is? equal_to?
+
 end
