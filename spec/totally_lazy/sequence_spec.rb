@@ -205,28 +205,6 @@ describe 'Sequence' do
     expect(sequence(some(1), none, some(2)).flat_map { |s| s }).to eq(sequence(1, 2))
   end
 
-  it 'should raise exception if you try to use both lambda and block' do
-    expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
-    expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
-    expect { empty.flat_map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
-    expect { empty.fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
-    expect { empty.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
-    expect { empty.fold_right(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
-    expect { empty.reduce(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
-    expect { empty.reduce_left(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
-    expect { empty.reduce_right(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
-    expect { empty.find(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.take_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.drop_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.exists?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.for_all?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.filter(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.group_by(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
-    expect { empty.each(->(v) { puts(v) }) { |v| puts(v) } }.to raise_error(RuntimeError)
-  end
-
   it 'should support flatten' do
     expect(sequence('Hello').map(to_characters).flatten).to eq(sequence('H', 'e', 'l', 'l', 'o'))
     expect(sequence(some(1), none, some(3)).flatten).to eq(sequence(1, 3))
@@ -300,5 +278,31 @@ describe 'Sequence' do
 
     strings_block = sequence(1, 2).map_concurrently { |value| to_string.(value) }
     expect(strings_block).to eq(sequence('1', '2'))
+  end
+
+  it 'should allow arrays to be converted to sequences' do
+    expect([1,2,3,4,5].to_seq).to eq(sequence(1,2,3,4,5))
+  end
+
+  it 'should raise exception if you try to use both lambda and block' do
+    expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
+    expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
+    expect { empty.flat_map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
+    expect { empty.fold(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.fold_left(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.fold_right(0, ->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.reduce(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.reduce_left(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.reduce_right(->(a, b) { a+b }) { |a, b| a+b } }.to raise_error(RuntimeError)
+    expect { empty.find(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.find_index_of(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.take_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.drop_while(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.exists?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.for_all?(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.filter(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.group_by(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
+    expect { empty.each(->(v) { puts(v) }) { |v| puts(v) } }.to raise_error(RuntimeError)
   end
 end

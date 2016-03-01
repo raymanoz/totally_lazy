@@ -3,6 +3,12 @@ require_relative 'lambda_block'
 class NoSuchElementException < RuntimeError
 end
 
+class Array
+  def to_seq
+    Sequence.new(self.lazy)
+  end
+end
+
 module Sequences
   def empty
     Sequence.empty
