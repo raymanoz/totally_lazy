@@ -13,6 +13,7 @@ end
 
 class Either
   include Comparable
+  include LambdaBlock
 
   def self.left(value)
     Left.new(value)
@@ -21,7 +22,6 @@ class Either
   def self.right(value)
     Right.new(value)
   end
-
 end
 
 class Left < Either
@@ -49,14 +49,17 @@ class Left < Either
     fn_left.(@value)
   end
 
+  def map_left(fn=nil, &block)
+    assert_funcs(fn, block_given?)
+    left(block_given? ? block.call(@value) : fn.(@value))
+  end
+
   def <=>(other)
     @value <=> other.left_value
   end
 end
 
 class Right < Either
-  include LambdaBlock
-
   def initialize(value)
     @value = value
   end
@@ -84,6 +87,11 @@ class Right < Either
 
   def map_lr(fn_left, fn_right)
     fn_right.(@value)
+  end
+
+  def map_left(fn=nil, &block)
+    assert_funcs(fn, block_given?)
+    self
   end
 
   def <=>(other)

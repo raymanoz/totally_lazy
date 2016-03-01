@@ -87,10 +87,10 @@ module Functions
   end
 
   def get_left
-    ->(either) { either.left }
+    ->(either) { either.left_value }
   end
 
   def get_right
-    ->(either) { either.right }
+    ->(either) { either.right_value }
   end
 end

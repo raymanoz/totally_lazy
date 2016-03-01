@@ -14,7 +14,16 @@ describe 'Either' do
     expect(right(3).map_lr(nil, add(2))).to eq(5)
   end
 
+  it 'should support map_left' do
+    expect(right(3).map_left(add(2))).to eq(right(3))
+    expect(right(3).map_left { |a| a+2 }).to eq(right(3))
+    expect(left(3).map_left(add(2))).to eq(left(5))
+    expect(left(3).map_left { |a| a+2 }).to eq(left(5))
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { right(1).map(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
+    expect { right(1).map_left(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
+    expect { left(1).map_left(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
   end
 end
