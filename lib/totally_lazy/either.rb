@@ -1,5 +1,17 @@
 require_relative 'lambda_block'
 
+class Proc
+  def or_exception
+    -> (value) {
+      begin
+        right(self.(value))
+      rescue Exception => e
+        left(e)
+      end
+    }
+  end
+end
+
 module Eithers
   private
   def left(value)
@@ -54,6 +66,10 @@ class Left < Either
     left(block_given? ? block.call(@value) : fn.(@value))
   end
 
+  def flat_map(fn=nil, &block) # a function which returns an either
+    assert_funcs(fn, block_given?)
+    self
+end
   def <=>(other)
     @value <=> other.left_value
   end
@@ -92,6 +108,11 @@ class Right < Either
   def map_left(fn=nil, &block)
     assert_funcs(fn, block_given?)
     self
+  end
+
+  def flat_map(fn=nil, &block) # a function which returns an either
+    assert_funcs(fn, block_given?)
+    block_given? ? block.call(@value) : fn.(@value)
   end
 
   def <=>(other)
