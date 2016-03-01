@@ -4,21 +4,20 @@ module Predicates
     -> (bool) { !pred.(bool) }
   end
 
-  def is_left?
+  def is_left
     -> (either) { either.is_left? }
   end
 
-  def is_right?
+  def is_right
     -> (either) { either.is_right? }
   end
 
-  def matches?(regex)
+  def matches(regex)
     ->(value) { !regex.match(value).nil? }
   end
 
   def equal_to?(that)
     ->(this) { this == that }
   end
-  alias is? equal_to?
-
+  alias is equal_to?
 end
