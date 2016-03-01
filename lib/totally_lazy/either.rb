@@ -69,10 +69,6 @@ class Left < Either
     raise NoSuchElementException.new
   end
 
-  def map_lr(fn_left, fn_right)
-    fn_left.(@value)
-  end
-
   def map_left(fn=nil, &block)
     assert_funcs(fn, block_given?)
     left(block_given? ? block.call(@value) : fn.(@value))
@@ -120,10 +116,6 @@ class Right < Either
   def map(fn=nil, &block)
     assert_funcs(fn, block_given?)
     right(block_given? ? block.call(@value) : fn.(@value))
-  end
-
-  def map_lr(fn_left, fn_right)
-    fn_right.(@value)
   end
 
   def map_left(fn=nil, &block)

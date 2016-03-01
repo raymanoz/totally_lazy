@@ -25,8 +25,6 @@ describe 'Either' do
   it 'should support map' do
     expect(right(3).map(add(2))).to eq(right(5))
     expect(right(3).map { |a| a+2 }).to eq(right(5))
-    expect(left(3).map_lr(add(2), nil)).to eq(5)
-    expect(right(3).map_lr(nil, add(2))).to eq(5)
   end
 
   it 'should support map_left' do
