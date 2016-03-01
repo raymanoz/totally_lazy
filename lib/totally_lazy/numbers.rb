@@ -4,8 +4,8 @@ module Numbers
     monoid(->(a, b) { a + b }, 0)
   end
 
-  def add
-    sum
+  def add(increment)
+    -> (number) { number + increment }
   end
 
   def even

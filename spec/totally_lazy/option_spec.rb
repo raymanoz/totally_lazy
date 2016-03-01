@@ -29,11 +29,11 @@ describe 'Option' do
   end
 
   it 'should support fold (aka fold_left)' do
-    expect(option(1).fold(1, add)).to eq(2)
-    expect(option(1).fold_left(1, add)).to eq(2)
+    expect(option(1).fold(1, sum)).to eq(2)
+    expect(option(1).fold_left(1, sum)).to eq(2)
     expect(option(1).fold(1) { |a, b| a + b }).to eq(2)
-    expect(some(1).fold(1, add)).to eq(2)
-    expect(none.fold(1, add)).to eq(1)
+    expect(some(1).fold(1, sum)).to eq(2)
+    expect(none.fold(1, sum)).to eq(1)
   end
 
   it 'should support map' do

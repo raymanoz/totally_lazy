@@ -1,3 +1,5 @@
+require_relative 'lambda_block'
+
 module Eithers
   private
   def left(value)
@@ -35,20 +37,26 @@ class Left < Either
     false
   end
 
-  def left
+  def left_value
     @value
   end
 
-  def right
+  def right_value
     raise NoSuchElementException.new
   end
 
+  def map_lr(fn_left, fn_right)
+    fn_left.(@value)
+  end
+
   def <=>(other)
-    @value <=> other.left
+    @value <=> other.left_value
   end
 end
 
 class Right < Either
+  include LambdaBlock
+
   def initialize(value)
     @value = value
   end
@@ -61,15 +69,24 @@ class Right < Either
     true
   end
 
-  def left
+  def left_value
     raise NoSuchElementException.new
   end
 
-  def right
+  def right_value
     @value
   end
 
+  def map(fn=nil, &block)
+    assert_funcs(fn, block_given?)
+    right(block_given? ? block.call(@value) : fn.(@value))
+  end
+
+  def map_lr(fn_left, fn_right)
+    fn_right.(@value)
+  end
+
   def <=>(other)
-    @value <=> other.right
+    @value <=> other.right_value
   end
 end
