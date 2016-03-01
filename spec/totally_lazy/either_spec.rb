@@ -65,6 +65,11 @@ describe 'Either' do
     expect(some('bar').map(as_right).get).to eq(right('bar'))
   end
 
+  it 'should not support getting left from right or right from left' do
+    expect { left('foo').right_value }.to raise_error(NoSuchElementException)
+    expect { right('foo').left_value }.to raise_error(NoSuchElementException)
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { right(1).map(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
     expect { right(1).map_left(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
