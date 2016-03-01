@@ -3,6 +3,21 @@
 require_relative '../spec_helper'
 
 describe 'Either' do
+  it 'should support creating rights' do
+    either = right(3)
+    expect(either.is_right?).to eq(true)
+    expect(either.is_left?).to eq(false)
+    expect(either.right_value).to eq(3)
+  end
+
+  it 'should support creating lefts' do
+    exception = NoSuchElementException.new
+    either = left(exception)
+    expect(either.is_right?).to eq(false)
+    expect(either.is_left?).to eq(true)
+    expect(either.left_value).to eq(exception)
+  end
+
   it 'can be used in filter and map' do
     eithers = sequence(left('error'), right(3))
     expect(eithers.filter(is_left?).map(get_left)).to eq(sequence('error'))
