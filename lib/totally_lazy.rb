@@ -2,6 +2,7 @@ require_relative 'totally_lazy/comparators'
 require_relative 'totally_lazy/either'
 require_relative 'totally_lazy/enumerators'
 require_relative 'totally_lazy/functions'
+require_relative 'totally_lazy/maps'
 require_relative 'totally_lazy/numbers'
 require_relative 'totally_lazy/option'
 require_relative 'totally_lazy/pair'
@@ -13,6 +14,7 @@ include Comparators
 include Eithers
 include Enumerators
 include Functions
+include Maps
 include Numbers
 include Options
 include Pairs
