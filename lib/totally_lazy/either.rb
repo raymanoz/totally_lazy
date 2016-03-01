@@ -21,6 +21,14 @@ module Eithers
   def right(value)
     Either.right(value)
   end
+
+  def as_left
+    ->(value) { left(value) }
+  end
+  
+  def as_right
+    ->(value) { right(value) }
+  end
 end
 
 class Either

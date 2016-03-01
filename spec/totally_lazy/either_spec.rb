@@ -60,6 +60,11 @@ describe 'Either' do
     expect(right(3).fold(2, nil, sum)).to eq(5)
   end
 
+  it 'should allow map to left and right' do
+    expect(some('foo').map(as_left).get).to eq(left('foo'))
+    expect(some('bar').map(as_right).get).to eq(right('bar'))
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { right(1).map(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
     expect { right(1).map_left(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
