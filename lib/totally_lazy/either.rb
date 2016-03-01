@@ -34,6 +34,10 @@ class Either
   def self.right(value)
     Right.new(value)
   end
+
+  def flatten
+    flat_map(identity)
+  end
 end
 
 class Left < Either

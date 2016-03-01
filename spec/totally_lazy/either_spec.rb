@@ -35,6 +35,11 @@ describe 'Either' do
     expect(left(2).flat_map { right(5) }).to eq(left(2))
   end
 
+  it 'should support flatten' do
+    expect(right(left(ZeroDivisionError.new)).flatten).to eq(left(ZeroDivisionError.new))
+    expect(right(right(1)).flatten).to eq(right(1))
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { right(1).map(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
     expect { right(1).map_left(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
@@ -42,5 +47,4 @@ describe 'Either' do
     expect { right(10).flat_map(divide(2)) { |a| a/2 } }.to raise_error(RuntimeError)
     expect { left(10).flat_map(divide(2)) { |a| a/2 } }.to raise_error(RuntimeError)
   end
-
 end
