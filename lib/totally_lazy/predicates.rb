@@ -11,4 +11,8 @@ module Predicates
   def is_right?
     -> (either) { either.is_right? }
   end
+
+  def matches?(regex)
+    ->(value) { !regex.match(value).nil? }
+  end
 end
