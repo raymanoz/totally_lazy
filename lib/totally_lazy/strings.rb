@@ -1,7 +1,11 @@
 module Strings
   private
-  def join(separator='')
-    monoid(->(a, b) { "#{a}#{separator}#{b}" }, '')
+  def join
+    monoid(->(a, b) { "#{a}#{b}" }, '')
+  end
+
+  def join_with_sep(separator)
+    ->(a, b) { "#{a}#{separator}#{b}" }
   end
 
   def to_characters

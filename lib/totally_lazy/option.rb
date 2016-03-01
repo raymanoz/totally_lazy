@@ -132,7 +132,7 @@ class Some < Option
   end
 
   def to_s
-    "Some(#{value})"
+    "some(#{value})"
   end
 end
 
@@ -208,7 +208,7 @@ class None < Option
   end
 
   def to_s
-    'None'
+    'none'
   end
 end
 

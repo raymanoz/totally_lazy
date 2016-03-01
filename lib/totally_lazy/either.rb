@@ -90,6 +90,10 @@ class Left < Either
   def <=>(other)
     @value <=> other.left_value
   end
+
+  def to_s
+    "left(#{@value})"
+  end
 end
 
 class Right < Either
@@ -138,5 +142,9 @@ class Right < Either
 
   def <=>(other)
     @value <=> other.right_value
+  end
+
+  def to_s
+    "right(#{@value})"
   end
 end

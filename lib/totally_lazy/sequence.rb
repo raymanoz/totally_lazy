@@ -302,6 +302,10 @@ class Sequence
     @enumerator.entries <=> other.enumerator.entries
   end
 
+  def to_s
+    "[#{self.take(100).reduce(join_with_sep(','))}]"
+  end
+
   private
   def seed(enumerator, fn)
     enumerator.rewind
