@@ -73,7 +73,12 @@ class Left < Either
   def flat_map(fn=nil, &block) # a function which returns an either
     assert_funcs(fn, block_given?)
     self
-end
+  end
+
+  def fold(seed, fn_left, fn_right)
+    fn_left.(seed, @value)
+  end
+
   def <=>(other)
     @value <=> other.left_value
   end
@@ -117,6 +122,10 @@ class Right < Either
   def flat_map(fn=nil, &block) # a function which returns an either
     assert_funcs(fn, block_given?)
     block_given? ? block.call(@value) : fn.(@value)
+  end
+
+  def fold(seed, fn_left, fn_right)
+    fn_right.(seed, @value)
   end
 
   def <=>(other)

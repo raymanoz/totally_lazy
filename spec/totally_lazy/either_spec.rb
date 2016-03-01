@@ -40,6 +40,11 @@ describe 'Either' do
     expect(right(right(1)).flatten).to eq(right(1))
   end
 
+  it 'should support fold' do
+    expect(left(3).fold(2, sum, nil)).to eq(5)
+    expect(right(3).fold(2, nil, sum)).to eq(5)
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { right(1).map(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
     expect { right(1).map_left(add(2)) { |a| a+2 } }.to raise_error(RuntimeError)
