@@ -284,6 +284,10 @@ describe 'Sequence' do
     expect([1,2,3,4,5].to_seq).to eq(sequence(1,2,3,4,5))
   end
 
+  it 'should allow sequences to be converted to arrays' do
+    expect(sequence(1,2,3,4,5).to_a).to eq([1,2,3,4,5])
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
     expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)

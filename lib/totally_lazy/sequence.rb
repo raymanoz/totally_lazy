@@ -304,6 +304,10 @@ class Sequence
     Sequence.new(@enumerator.to_a.lazy)
   end
 
+  def to_a
+    @enumerator.to_a
+  end
+
   def <=>(other)
     @enumerator.entries <=> other.enumerator.entries
   end
