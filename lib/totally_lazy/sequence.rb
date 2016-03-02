@@ -281,7 +281,7 @@ class Sequence
 
   def reject(fn_pred=nil, &block_pred)
     assert_funcs(fn_pred, block_given?)
-    filter(_not(block_given? ? ->(value) { block_pred.call(value) } : fn_pred))
+    filter(is_not(block_given? ? ->(value) { block_pred.call(value) } : fn_pred))
   end
 
   def group_by(fn=nil, &block)

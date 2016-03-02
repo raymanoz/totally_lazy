@@ -21,11 +21,15 @@ describe 'Predicates' do
       @age = age
     end
   end
+  raymond = Person.new('Raymond', 41)
+  mathilda = Person.new('Mathilda', 4)
+  age = ->(person) { person.age }
 
   it 'should allow where' do
-    raymond = Person.new('Raymond', 41)
-    mathilda = Person.new('Mathilda', 4)
-    age = ->(person) { person.age }
     expect(sequence(raymond, mathilda).filter(where(age, greater_than(40)))).to eq(sequence(raymond))
+  end
+
+  it 'should be able to negate other predicates using is_not' do
+    expect(sequence(raymond).filter(where(age, is_not(greater_than(40))))).to eq(empty)
   end
 end

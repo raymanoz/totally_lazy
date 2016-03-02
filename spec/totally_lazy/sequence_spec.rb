@@ -79,7 +79,7 @@ describe 'Sequence' do
   end
 
   it 'should support composite predicates' do
-    expect(sequence(1, 2, 3, 4).filter(_not(even))).to eq(sequence(1, 3))
+    expect(sequence(1, 2, 3, 4).filter(is_not(even))).to eq(sequence(1, 3))
   end
 
   it 'should support reject' do
