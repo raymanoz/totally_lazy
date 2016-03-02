@@ -51,17 +51,18 @@ module Enumerators
     Enumerator.new do |y|
       current_enumerator = empty_enumerator
 
-      loop do
+      get_current_enumerator = ->() {
         until has_next(current_enumerator)
-          unless has_next(enumerator)
-            current_enumerator = empty_enumerator
-            break
-          end
+          return empty_enumerator unless has_next(enumerator)
           current_enumerator = enumerator.next.enumerator
         end
+        current_enumerator
+      }
 
-        if has_next(current_enumerator)
-          y << current_enumerator.next
+      loop do
+        current = get_current_enumerator.()
+        if has_next(current)
+          y << current.next
         else
           raise StopIteration.new
         end
