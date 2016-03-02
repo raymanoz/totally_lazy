@@ -1,6 +1,21 @@
 require 'concurrent/executors'
 require 'concurrent/promise'
 
+class Proc
+  def self.compose(f, g)
+    lambda { |*args| f[g[*args]] }
+  end
+
+  def *(g)
+    Proc.compose(self, g)
+  end
+
+  def and(g)
+    Proc.compose(g, self)
+  end
+  alias and_then and
+end
+
 module Functions
   private
   def monoid(fn, id)
