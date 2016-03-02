@@ -304,6 +304,13 @@ class Sequence
     Sequence.new(@enumerator.to_a.lazy)
   end
 
+  def join(other)
+    Sequence.new(Enumerator.new do |y|
+      @enumerator.each { |value| y << value }
+      other.enumerator.each { |value| y << value }
+    end.lazy)
+  end
+
   def to_a
     @enumerator.to_a
   end

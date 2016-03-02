@@ -301,6 +301,10 @@ describe 'Sequence' do
     expect(sequence(sequence(1)).flatten.to_s).to eq('[1]')
   end
 
+  it 'should support join' do
+    expect(sequence(1,2,3).join(sequence(4,5,6))).to eq(sequence(1,2,3,4,5,6))
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
     expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
