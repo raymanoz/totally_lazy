@@ -48,6 +48,7 @@ module Enumerators
   end
 
   def flatten_enumerator(enumerator)
+    enumerator.rewind
     Enumerator.new do |y|
       current_enumerator = empty_enumerator
 
@@ -55,6 +56,7 @@ module Enumerators
         until has_next(current_enumerator)
           return empty_enumerator unless has_next(enumerator)
           current_enumerator = enumerator.next.enumerator
+          current_enumerator.rewind
         end
         current_enumerator
       }

@@ -211,6 +211,12 @@ describe 'Sequence' do
     expect(sequence(sequence(1)).flatten).to eq(sequence(1))
   end
 
+  it 'should allow flattening multiple times' do
+    sequence = sequence(sequence('1', '2'), empty, sequence('4', '5'))
+    expect(sequence.flatten).to eq(sequence('1', '2', '4', '5'))
+    expect(sequence.flatten).to eq(sequence('1', '2', '4', '5'))
+  end
+
   it 'should support drop' do
     expect(sequence(1, 2, 3).drop(2)).to eq(sequence(3))
     expect(sequence(1).drop(2)).to eq(empty)
