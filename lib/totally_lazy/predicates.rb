@@ -20,4 +20,8 @@ module Predicates
     ->(this) { this == that }
   end
   alias is equal_to?
+
+  def where(fn, predicate)
+    ->(value) { predicate.(fn.(value)) }
+  end
 end
