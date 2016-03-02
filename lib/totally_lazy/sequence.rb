@@ -313,7 +313,7 @@ class Sequence
   end
 
   def to_s
-    "[#{self.take(100).reduce(join_with_sep(','))}]"
+    "[#{self.is_empty? ? '' : self.take(100).reduce(join_with_sep(','))}]"
   end
 
   private

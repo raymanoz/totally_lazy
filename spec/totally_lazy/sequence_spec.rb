@@ -288,6 +288,11 @@ describe 'Sequence' do
     expect(sequence(1,2,3,4,5).to_a).to eq([1,2,3,4,5])
   end
 
+  it 'should be able to display sequence as a string' do
+    expect(sequence(1,2,3,4,5).to_s).to eq('[1,2,3,4,5]')
+    expect(empty.to_s).to eq('[]')
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
     expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
