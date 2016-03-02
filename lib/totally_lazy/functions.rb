@@ -36,7 +36,7 @@ module Functions
 
   alias call_throws call_raises
 
-  def call
+  def call_fn
     ->(fn) { fn.() }
   end
 
@@ -70,9 +70,7 @@ module Functions
   end
 
   def as_promise
-    -> (fn) {
-      Concurrent::Promise.new { fn.() }
-    }
+    -> (fn) { Concurrent::Promise.new { fn.() } }
   end
 
   def execute_with(pool)

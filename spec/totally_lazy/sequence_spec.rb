@@ -64,7 +64,7 @@ describe 'Sequence' do
   end
 
   it 'should ensure map is lazy' do
-    result = sequence(returns(1), call_raises(RuntimeError.new)).map(call)
+    result = sequence(returns(1), call_raises(RuntimeError.new)).map(call_fn)
     expect(result.head).to eq(1)
   end
 
@@ -74,7 +74,7 @@ describe 'Sequence' do
   end
 
   it 'should ensure filter is lazy' do
-    result = sequence(returns(1), returns(2), call_raises(RuntimeError.new)).map(call).filter(even)
+    result = sequence(returns(1), returns(2), call_raises(RuntimeError.new)).map(call_fn).filter(even)
     expect(result.head).to eq(2)
   end
 
@@ -208,6 +208,7 @@ describe 'Sequence' do
   it 'should support flatten' do
     expect(sequence('Hello').map(to_characters).flatten).to eq(sequence('H', 'e', 'l', 'l', 'o'))
     expect(sequence(some(1), none, some(3)).flatten).to eq(sequence(1, 3))
+    expect(sequence(sequence(1)).flatten).to eq(sequence(1))
   end
 
   it 'should support drop' do
@@ -291,6 +292,7 @@ describe 'Sequence' do
   it 'should be able to display sequence as a string' do
     expect(sequence(1,2,3,4,5).to_s).to eq('[1,2,3,4,5]')
     expect(empty.to_s).to eq('[]')
+    expect(sequence(sequence(1)).flatten.to_s).to eq('[1]')
   end
 
   it 'should raise exception if you try to use both lambda and block' do
