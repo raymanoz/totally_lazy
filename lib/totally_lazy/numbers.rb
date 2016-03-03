@@ -47,4 +47,12 @@ module Numbers
   def greater_than(right)
     predicate(->(left) { left > right })
   end
+
+  def multiply(y)
+    monoid(->(x){x * y}, 1)
+  end
+
+  def powers_of(amount)
+    Sequence.new(enumerate(multiply(amount), 1))
+  end
 end

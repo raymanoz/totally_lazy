@@ -73,11 +73,13 @@ module Enumerators
   end
 
   def enumerate(fn, start)
-    current = start
     Enumerator.new do |y|
-      result = current
-      current = fn.(current)
-      y << result
+      current = start
+      loop do
+        result = current
+        current = fn.(current)
+        y << result
+      end
     end.lazy
   end
 
