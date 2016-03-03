@@ -288,21 +288,21 @@ describe 'Sequence' do
   end
 
   it 'should allow arrays to be converted to sequences' do
-    expect([1,2,3,4,5].to_seq).to eq(sequence(1,2,3,4,5))
+    expect([1, 2, 3, 4, 5].to_seq).to eq(sequence(1, 2, 3, 4, 5))
   end
 
   it 'should allow sequences to be converted to arrays' do
-    expect(sequence(1,2,3,4,5).to_a).to eq([1,2,3,4,5])
+    expect(sequence(1, 2, 3, 4, 5).to_a).to eq([1, 2, 3, 4, 5])
   end
 
   it 'should be able to display sequence as a string' do
-    expect(sequence(1,2,3,4,5).to_s).to eq('[1,2,3,4,5]')
+    expect(sequence(1, 2, 3, 4, 5).to_s).to eq('[1,2,3,4,5]')
     expect(empty.to_s).to eq('[]')
     expect(sequence(sequence(1)).flatten.to_s).to eq('[1]')
   end
 
   it 'should support join' do
-    expect(sequence(1,2,3).join(sequence(4,5,6))).to eq(sequence(1,2,3,4,5,6))
+    expect(sequence(1, 2, 3).join(sequence(4, 5, 6))).to eq(sequence(1, 2, 3, 4, 5, 6))
   end
 
   it 'should raise exception if you try to use both lambda and block' do
@@ -325,5 +325,9 @@ describe 'Sequence' do
     expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.group_by(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.each(->(v) { puts(v) }) { |v| puts(v) } }.to raise_error(RuntimeError)
+  end
+
+  it 'should support cycle' do
+    expect(range(1, 3).cycle.take(10)).to eq(sequence(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
   end
 end

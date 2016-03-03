@@ -72,6 +72,24 @@ module Enumerators
     end.lazy
   end
 
+  def enumerate(fn, start)
+    current = start
+    Enumerator.new do |y|
+      result = current
+      current = fn.(current)
+      y << result
+    end.lazy
+  end
+
+  def cycle_enumerator(e)
+    Enumerator.new do |y|
+      loop do
+        e.rewind unless has_next(e)
+        y << e.next
+      end
+    end.lazy
+  end
+
   def empty_enumerator
     [].lazy
   end

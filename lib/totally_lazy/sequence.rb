@@ -311,6 +311,10 @@ class Sequence
     end.lazy)
   end
 
+  def cycle
+    Sequence.new(cycle_enumerator(@enumerator))
+  end
+
   def to_a
     @enumerator.to_a
   end
