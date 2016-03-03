@@ -3,6 +3,14 @@ module Pairs
   def pair(first, second)
     Pair.new(first, second)
   end
+
+  def first
+    ->(pair) { pair.first }
+  end
+
+  def second
+    ->(pair) { pair.second }
+  end
 end
 
 class Pair
