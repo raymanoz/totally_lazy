@@ -319,6 +319,10 @@ class Sequence
     @enumerator.entries <=> other.enumerator.entries
   end
 
+  def inspect
+    to_s
+  end
+
   def to_s
     sample = take(100).to_a.to_seq
     "[#{sample.is_empty? ? '' : sample.reduce(join_with_sep(','))}]"

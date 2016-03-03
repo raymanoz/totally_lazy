@@ -10,10 +10,9 @@ class Proc
     Proc.compose(self, g)
   end
 
-  def and(g)
+  def and_then(g)
     Proc.compose(g, self)
   end
-  alias and_then and
 end
 
 module Functions

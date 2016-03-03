@@ -32,4 +32,9 @@ describe 'Predicates' do
   it 'should be able to negate other predicates using is_not' do
     expect(sequence(raymond).filter(where(age, is_not(greater_than(40))))).to eq(empty)
   end
+
+  it 'should allow predicates to be composed using logical operations (AND/OR)' do
+    expect(sequence(1,2,3,4,5).filter(greater_than(2).and(odd))).to eq(sequence(3,5))
+    expect(sequence(1,2,3,4,5).filter(greater_than(2).or(odd))).to eq(sequence(1,3,4,5))
+  end
 end

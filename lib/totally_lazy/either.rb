@@ -22,6 +22,14 @@ module Eithers
     Either.right(value)
   end
 
+  def is_left
+    predicate(-> (either) { either.is_left? })
+  end
+
+  def is_right
+    predicate(-> (either) { either.is_right? })
+  end
+
   def as_left
     ->(value) { left(value) }
   end

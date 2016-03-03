@@ -1,27 +1,39 @@
 module Predicates
   private
+  def predicate(fn)
+    def fn.and(other)
+      -> (value) { self.(value) && other.(value) }
+    end
+    def fn.or(other)
+      -> (value) { self.(value) || other.(value) }
+    end
+    fn
+  end
+
   def is_not(pred)
-    -> (bool) { !pred.(bool) }
-  end
-
-  def is_left
-    -> (either) { either.is_left? }
-  end
-
-  def is_right
-    -> (either) { either.is_right? }
+    predicate(-> (bool) { !pred.(bool) })
   end
 
   def matches(regex)
-    ->(value) { !regex.match(value).nil? }
+    predicate(->(value) { !regex.match(value).nil? })
   end
 
   def equal_to?(that)
-    ->(this) { this == that }
+    predicate(->(this) { this == that })
   end
   alias is equal_to?
 
   def where(fn, predicate)
-    ->(value) { predicate.(fn.(value)) }
+    predicate(->(value) { predicate.(fn.(value)) })
+  end
+end
+
+class PredicateFunction < Proc
+  def and(other)
+    ->(value) { self.(value) && other.(value) }
+  end
+
+  def or(other)
+    ->(value) { self.(value) || other.(value) }
   end
 end
