@@ -61,7 +61,7 @@ sequence(1, 2, 3).to_s                      # eagerly returns "[1,2,3]"
 
 ```ruby
 range(1, 4)             # lazily returns 1,2,3,4
-repeat("car")           # lazily returns an infinite sequence of "car"s
+repeat('car')           # lazily returns an infinite sequence of 'car's
 enumerate(increment, 1) # lazily returns 1,2,3 ... to infinity
 range(1, 4).cycle()     # lazily returns 1,2,3,4,1,2,3,4,1,2,3,4 infinitely 
 powers_of(3)            # lazily returns the powers of 3 (i.e 1,3,9,27 ...)
@@ -74,3 +74,7 @@ enumerate(increment, 1).filter(even).take(10).reduce(sum) # returns 110
 ```
 
 And because all the operations except reduce are lazy the sequence of numbers is only processed once.
+
+### License
+
+[Apache 2](http://www.apache.org/licenses/LICENSE-2.0)
