@@ -20,13 +20,13 @@ This gem requires ruby >= 2.0.0
 In your bundler Gemfile
 
 ```ruby
- gem totally_lazy, '~>0.1.54' (or latest) 
+gem totally_lazy, '~>0.1.54' # (or latest) 
 ```
 
 Or with rubygems
 
 ```
- gem install totally_lazy
+gem install totally_lazy
 ```
 
 ### Examples
@@ -56,3 +56,21 @@ sequence(pair(1, 2), pair(3, 4)).filter(where(first, equal_to?(3)))
                                             # lazily returns pair(3,4)
 sequence(1, 2, 3).to_s                      # eagerly returns "[1,2,3]"
 ```
+
+### Generators
+
+```ruby
+range(1, 4)             # lazily returns 1,2,3,4
+repeat("car")           # lazily returns an infinite sequence of "car"s
+enumerate(increment, 1) # lazily returns 1,2,3 ... to infinity
+range(1, 4).cycle()     # lazily returns 1,2,3,4,1,2,3,4,1,2,3,4 infinitely 
+powers_of(3)            # lazily returns the powers of 3 (i.e 1,3,9,27 ...)
+```
+
+Naturally you can combine these operations together ... 
+
+```ruby
+enumerate(increment, 1).filter(even).take(10).reduce(sum) # returns 110
+```
+
+And because all the operations except reduce are lazy the sequence of numbers is only processed once.

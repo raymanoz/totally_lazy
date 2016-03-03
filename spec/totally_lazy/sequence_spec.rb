@@ -305,6 +305,10 @@ describe 'Sequence' do
     expect(sequence(1, 2, 3).join(sequence(4, 5, 6))).to eq(sequence(1, 2, 3, 4, 5, 6))
   end
 
+  it 'should support cycle' do
+    expect(range(1, 3).cycle.take(10)).to eq(sequence(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { empty.map(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
     expect { empty.map_concurrently(->(a) { a+1 }) { |b| b+2 } }.to raise_error(RuntimeError)
@@ -325,9 +329,5 @@ describe 'Sequence' do
     expect { empty.reject(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.group_by(->(_) { true }) { |_| true } }.to raise_error(RuntimeError)
     expect { empty.each(->(v) { puts(v) }) { |v| puts(v) } }.to raise_error(RuntimeError)
-  end
-
-  it 'should support cycle' do
-    expect(range(1, 3).cycle.take(10)).to eq(sequence(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
   end
 end

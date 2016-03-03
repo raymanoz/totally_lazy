@@ -53,6 +53,6 @@ module Numbers
   end
 
   def powers_of(amount)
-    Sequence.new(enumerate(multiply(amount), 1))
+    enumerate(multiply(amount), 1)
   end
 end

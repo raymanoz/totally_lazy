@@ -42,6 +42,17 @@ module Sequences
     Sequence.new(repeat_fn_enumerator(item))
   end
 
+  def enumerate(fn, start)
+    Sequence.new(Enumerator.new do |y|
+      current = start
+      loop do
+        result = current
+        current = fn.(current)
+        y << result
+      end
+    end.lazy)
+  end
+
   private
 
   def pair_enumerator(left, right)

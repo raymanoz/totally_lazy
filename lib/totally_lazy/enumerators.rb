@@ -72,17 +72,6 @@ module Enumerators
     end.lazy
   end
 
-  def enumerate(fn, start)
-    Enumerator.new do |y|
-      current = start
-      loop do
-        result = current
-        current = fn.(current)
-        y << result
-      end
-    end.lazy
-  end
-
   def cycle_enumerator(e)
     Enumerator.new do |y|
       loop do
