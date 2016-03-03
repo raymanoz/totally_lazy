@@ -31,8 +31,6 @@ gem install totally_lazy
 
 ### Examples
 
-The following are some simple examples of the currently implemented functionality.
-
 ```ruby
 require 'totally_lazy'
 
