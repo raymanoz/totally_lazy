@@ -97,6 +97,14 @@ describe 'Option' do
     expect{none.get_or_raise(RuntimeError.new)}.to raise_error(RuntimeError)
   end
 
+  it 'should support converting some to_either as right' do
+    expect(some('all good').to_either('borked')).to eq(right('all good'))
+  end
+
+  it 'should support converting none to_either as left' do
+    expect(none.to_either('borked')).to eq(left('borked'))
+  end
+
   it 'should raise exception if you try to use both lambda and block' do
     expect { some(1).exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)
     expect { none.exists?(->(a) { a == 1 }) { |b| b == 2 } }.to raise_error(RuntimeError)

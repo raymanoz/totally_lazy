@@ -120,6 +120,10 @@ class Some < Option
 
   alias get_or_throw get_or_raise
 
+  def to_either(left)
+    right(value)
+  end
+
   def enumerator
     Enumerator.new { |y|
       y << @value
@@ -201,6 +205,10 @@ class None < Option
     Enumerator.new { |y|
       raise StopIteration.new
     }
+  end
+
+  def to_either(value)
+    left(value)
   end
 
   def <=>(other)
